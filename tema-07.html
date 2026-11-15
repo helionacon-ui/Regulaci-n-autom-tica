@@ -57,6 +57,10 @@
 <li>Dar sólo la cota superior de \(K\) y olvidar la inferior (habitualmente \(K>0\)).</li>
 <li>Concluir «estable» cuando algún elemento de la primera columna es <b>cero</b>: eso es el límite, no la estabilidad.</li>
 </ul></div>
+<h3 id="t7-routh-paso">La tabla de Routh, paso a paso</h3>
+<p>La tabla de Routh permite decir cuántas raíces tiene un polinomio en el semiplano derecho sin calcularlas. Cada fila se construye con los dos anteriores, y el número de cambios de signo en la primera columna da la respuesta.</p>
+<figure class="fig"><p class="ft">Figura interactiva · tabla de Routh de s³ + 2s² + 3s + 10</p><div data-sim="routhPaso"></div><figcaption>Sube el paso: se completan las filas, se cuentan los cambios de signo en la primera columna y se concluye la estabilidad.</figcaption></figure>
+<div class="box trap"><h4>Trampas típicas</h4><ul><li>Concluir que el sistema es estable solo porque todos los coeficientes son positivos: es necesario, pero no suficiente.</li><li>Contar los ceros de la primera columna como cambios de signo sin tratarlos antes.</li><li>Confundir el número de cambios de signo con el número de raíces en el semiplano izquierdo.</li></ul></div>
 <h3 id="t7-problema">Problema resuelto</h3>
 <div class="prob"><div class="enun"><p class="et">Enunciado</p><p>Un sistema con realimentación unitaria tiene \(G(s)=\dfrac{K}{s(s+2)(s+4)}\). a) Determina el rango de \(K\) para el que el lazo cerrado es estable. b) Halla la frecuencia de oscilación en el límite de estabilidad. c) Con \(K=20\), ¿cuántos polos inestables hay?</p></div>
 <details class="paso"><summary><span class="pn">✓</span>Ver solución paso a paso</summary><div class="inner"><p><b>1. Ecuación característica:</b></p>

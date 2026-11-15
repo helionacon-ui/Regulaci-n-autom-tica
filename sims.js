@@ -637,5 +637,56 @@ SIMS.pid=el=>build(el,{w:680,h:262,
   ${s.Kd>0.01?'La acción <b>derivativa</b> aporta amortiguamiento: permite subir Kp sin que el sobreimpulso se dispare.':'Prueba a subir la acción derivativa: verás cómo baja el sobreimpulso y se puede aumentar Kp.'}
   <span class="hint">P reduce el error y acelera, pero oscila; I anula el error pero desestabiliza; D amortigua pero amplifica el ruido. Un PID bien ajustado es el equilibrio entre las tres, y es el regulador que lleva el 90 % de los lazos industriales.</span>`);}});
 
+/* ---- Criterio de Routh-Hurwitz paso a paso: D(s) = s³ + 2s² + 3s + 10 ---- */
+SIMS.routhPaso=el=>build(el,{w:660,h:380,
+ sliders:[{k:'paso',v:0,min:0,max:6,step:1,l:'paso de la resolución (0 = problema)',u:''}],
+ draw(a){a.clear();const p=a.st.paso;
+  const RX=[60,170,250],RY=[120,160,200,240];   // etiqueta, columna 1, columna 2
+  const rows=[['s³','1','3'],['s²','2','10'],['s¹','−2','0'],['s⁰','10','']];
+  // cabecera y líneas de la tabla
+  a.txt('potencia',RX[0],92,C.muted,11,'left');
+  a.txt('col. 1',RX[1],92,C.muted,11,'center');
+  a.txt('col. 2',RX[2],92,C.muted,11,'center');
+  a.line(40,102,300,102,C.muted,1);
+  rows.forEach((r,i)=>{
+    const show = (i<=1) || (i===2 && p>=2) || (i===3 && p>=3);
+    if(!show) return;
+    const hl = (i===2 && p===2) || (i===3 && p===3);
+    const col = hl ? C.d : C.text;
+    a.txt(r[0],RX[0],RY[i]+5,C.text,14,'left');
+    a.txt(r[1],RX[1],RY[i]+5,(p>=5&&i>=2&&r[1].startsWith('−'))||(i===2&&r[1]==='−2'&&p>=2)?C.d:col,14,'center');
+    if(r[2]!=='')a.txt(r[2],RX[2],RY[i]+5,col,14,'center');
+  });
+  // signos de la primera columna y número de cambios
+  if(p>=5){
+    const sg=['+','+','−','+'];
+    a.txt('signo',330,92,C.muted,11,'center');
+    sg.forEach((s,i)=>a.txt(s,330,RY[i]+5,s==='−'?C.d:C.c,15,'center'));
+    a.txt('2 cambios de signo',330,RY[3]+36,C.d,12,'center');
+  }
+  // desarrollo a la derecha
+  a.txt('Polinomio: D(s) = s³ + 2s² + 3s + 10',350,50,C.text,13,'left');
+  if(p>=2)a.txt('b₁ = (2·3 − 1·10) / 2 = −2',350,96,C.d,13,'left');
+  if(p>=3)a.txt('c₁ = (b₁·10 − 2·0) / b₁ = 10',350,126,C.text,13,'left');
+  if(p>=5){
+    a.txt('Primera columna: 1, 2, −2, 10',350,196,C.text,13,'left');
+    a.txt('signos: + + − +  →  2 cambios',350,218,C.d,13,'left');
+  }
+  if(p>=6){
+    a.txt('Raíces en el semiplano derecho: 2',350,262,C.d,14,'left');
+    a.txt('Sistema INESTABLE',350,286,C.d,15,'left');
+  }
+  const T=[
+   'Se quiere saber si el sistema con polinomio característico D(s) = s³ + 2s² + 3s + 10 es estable. Para eso no hace falta calcular las raíces: basta con el criterio de Routh-Hurwitz.',
+   'Primero se colocan los coeficientes en filas: la fila s³ con 1 y 3, y la fila s² con 2 y 10. Un polinomio de grado 3 con todos sus coeficientes positivos es necesario, pero no suficiente, para ser estable.',
+   'Fila s¹: b₁ = (2·3 − 1·10)/2 = −2. Se calcula con los cuatro números de las dos filas anteriores. Su signo negativo ya avisa de que el sistema no es estable.',
+   'Fila s⁰: c₁ = (b₁·10 − 2·0)/b₁ = 10. Como la primera columna ya tiene todos sus elementos, la tabla está completa.',
+   'Tabla completa: la primera columna queda 1, 2, −2, 10. Si el polinomio fuera estable, toda la primera columna tendría el mismo signo.',
+   'Se cuentan los cambios de signo en la primera columna: + → +, + → −, − → +. Hay dos cambios.',
+   'El número de cambios de signo es igual al número de raíces en el semiplano derecho: aquí hay 2. Como hay raíces con parte real positiva, el sistema es inestable.'
+  ];
+  a.html(`<div>${T[p]}</div>`);
+ }});
+
 document.querySelectorAll("[data-sim]").forEach(function(el){var k=el.getAttribute("data-sim");if(SIMS[k]){try{SIMS[k](el);}catch(e){console.error("sim "+k,e);}}else console.warn("sim no encontrada: "+k);});
 })();
