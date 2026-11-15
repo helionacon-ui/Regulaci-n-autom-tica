@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>T9 Diseño de compensadores de adelanto y atraso · Regulación Automática · Guía para aprobar</title>
+<meta name="description" content="Regulación Automática (UPCT, GIEyA): tema 9, Diseño de compensadores de adelanto y atraso">
+<meta name="theme-color" content="#3c4fa8">
+<link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<link rel="stylesheet" href="style.css">
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="hub-bar" style="max-width:1180px;margin:0 auto;padding:10px 16px 0"><a href="https://helionacon-ui.github.io/GIEIA-UPCT/" style="display:inline-flex;align-items:center;gap:6px;font:600 13.5px/1 system-ui,sans-serif;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);text-decoration:none">← Todas las guías GIEyA</a><p class="fecha" style="margin:6px 0 0;max-width:none;font:13px/1.45 system-ui,sans-serif;color:var(--muted)">Datos tomados del curso <time datetime="2022-09">2022/23</time> (transparencias de los temas, formulario oficial, guía docente, prácticas y el 1.er parcial resuelto de 2022/23) · página creada en noviembre de 2026</p></div>
+<div class="crumb"><a href="index.html">Regulación Automática</a><span class="sep">›</span><span>Análisis y diseño</span><span class="sep">›</span><span>T9 · Diseño de compensadores de adelanto y atraso</span></div><a href="#top" class="totop" id="totop" aria-label="Volver arriba">↑</a>
+<div class="wrap" id="top">
+<nav aria-label="Índice" class="toc"><a href="index.html" style="--tc:var(--c0)">Portada</a><div class="grp">Empezar</div><a href="index.html#cero" style="--tc:var(--c0)">Empieza aquí desde cero</a><a href="plan.html" style="--tc:var(--c0)">Cómo es la evaluación</a><a href="index.html#progreso" style="--tc:var(--c0)">Tu progreso</a><div class="grp">Modelado de sistemas</div><a href="tema-01.html" style="--tc:var(--c2)">T1 Qué es controlar un sistema</a><a href="tema-02.html" style="--tc:var(--c3)">T2 Señales y transformada de Laplace</a><a href="tema-03.html" style="--tc:var(--c4)">T3 Modelado de sistemas físicos y linealización</a><a href="tema-04.html" style="--tc:var(--c5)">T4 Diagramas de bloques y función de transferencia</a><div class="grp">Análisis y diseño</div><a href="tema-05.html" style="--tc:var(--c6)">T5 Análisis temporal: primer y segundo orden</a><a href="tema-06.html" style="--tc:var(--c7)">T6 Sistemas realimentados: errores y sensibilidad</a><a href="tema-07.html" style="--tc:var(--c8)">T7 Estabilidad y criterio de Routh-Hurwitz</a><a href="tema-08.html" style="--tc:var(--c1)">T8 El lugar de las raíces</a><a href="tema-09.html" style="--tc:var(--c2)" class="on" aria-current="page">T9 Diseño de compensadores de adelanto y atraso</a><div class="grp">Practicar</div><a href="cuestiones.html" style="--tc:var(--c8)">Cuestiones de teoría respondidas</a><a href="examenes.html" style="--tc:var(--c8)">Problemas de examen resueltos</a><a href="problemas.html" style="--tc:var(--c8)">Qué cae en cada parcial</a><a href="laboratorio.html" style="--tc:var(--c7)">Prácticas y MATLAB</a><a href="formulario.html" style="--tc:var(--c8)">Formulario</a></nav>
+<main>
+<section class="sec tema" style="--tc:var(--c2);--tcs:var(--c2s)">
+<div class="sh"><span aria-hidden="true" class="badge">9</span><div class="shx"><p class="kick">Análisis y diseño · Tema 9</p><h2 id="t9">Diseño de compensadores de adelanto y atraso</h2><div class="tags"><span class="tag">Análisis y diseño</span><span class="tag">2.º parcial</span></div></div></div>
+<div class="zero"><p class="ft">Desde cero</p><p><b>Objetivo:</b> diseñar redes de adelanto, atraso y adelanto-atraso mediante la reforma del lugar de las raíces para cumplir especificaciones de transitorio y de error.</p><ul>
+<li>Si las especificaciones caen <b>fuera</b> del lugar de las raíces, ninguna ganancia las cumple: hay que <b>reformar el lugar</b> añadiendo polos y ceros con un compensador.</li>
+<li>La <b>red de adelanto</b> aporta fase positiva y <b>atrae el lugar a la izquierda</b>: mejora el <b>transitorio</b> (más rápido, menos sobreimpulso). Su cero va antes que su polo.</li>
+<li>La <b>red de atraso</b> se coloca cerca del origen, con el cero y el polo muy juntos: casi no mueve el lugar pero <b>multiplica la ganancia estática</b>, es decir, mejora el <b>error</b>.</li>
+<li>La <b>red de adelanto-atraso</b> combina ambas cuando hay que mejorar las dos cosas: primero se diseña el adelanto para el transitorio y después el atraso para el error.</li>
+<li>El procedimiento siempre es el mismo: traducir las especificaciones a un <b>polo deseado</b>, medir cuánta fase falta y colocar el cero y el polo del compensador para aportarla.</li>
+<li>Las acciones <b>PID</b> son la versión industrial de lo mismo: la derivativa se parece al adelanto y la integral al atraso llevado al extremo (polo exactamente en el origen).</li>
+</ul></div>
+<details class="nom"><summary><span aria-hidden="true" class="nom-ic">Aa</span>Nomenclatura del tema 9 <span class="src">8 entradas</span></summary><div class="inner">
+<div class="tw"><table><tr><th>Símbolo</th><th>Significado</th><th>Unidad · nota</th></tr><tr><td class="sym">adelanto</td><td>z < p</td><td class="u">aporta fase, mejora el transitorio</td></tr><tr><td class="sym">atraso</td><td>z > p, cerca del origen</td><td class="u">mejora el error</td></tr><tr><td class="sym">β</td><td>z/p de la red de atraso</td><td class="u">factor de mejora del error</td></tr><tr><td class="sym">sd</td><td>polo deseado</td><td class="u">de las especificaciones</td></tr><tr><td class="sym">φ</td><td>fase que falta</td><td class="u">para cumplir ±180°</td></tr><tr><td class="sym">Kc</td><td>ganancia del compensador</td><td class="u">cond. de módulo</td></tr><tr><td class="sym">PID</td><td>Kp + Ki/s + Kd·s</td><td class="u"></td></tr><tr><td class="sym">Ziegler-Nichols</td><td>sintonía a partir de Ku y Tu</td><td class="u"></td></tr></table></div></div></details>
+<figure class="fig"><p class="ft">Figura interactiva - diseno de una red de adelanto</p><div data-sim="compensador"></div><figcaption>Mueve los controles y observa cómo cambia el resultado: es el mismo cálculo que hay que saber hacer a mano en el examen.</figcaption></figure>
+<h3 id="t9-formulas">Fórmulas que hay que saber usar</h3>
+<div class="box key"><ul>
+<li><b>Red de adelanto:</b> \(C(s)=K_c\dfrac{s+z}{s+p}\) con \(z<p\); aporta fase positiva.</li>
+<li><b>Red de atraso:</b> \(C(s)=K_c\dfrac{s+z}{s+p}\) con \(z>p\) y ambos cerca del origen; multiplica el error estático por \(\beta=z/p\).</li>
+<li><b>Polo deseado:</b> de \(M_p\) sale \(\xi\) y de \(t_s\) sale \(\sigma=\xi\omega_n\); \(s_d=-\sigma+j\omega_d\).</li>
+<li><b>Fase que falta:</b> \(\varphi=180^\circ-\left[\sum\angle\text{ceros}-\sum\angle\text{polos}\right]_{s_d}\) de la planta.</li>
+<li><b>Método de la bisectriz:</b> se traza la bisectriz del ángulo entre el eje real negativo y el vector \(s_d\), y a cada lado se abre \(\varphi/2\); los cortes con el eje real dan \(z\) y \(p\). Da el máximo \(\beta\).</li>
+<li><b>Método de cancelación:</b> se pone el cero sobre un polo de la planta y se calcula el polo del compensador con la condición de ángulo. Es el más rápido.</li>
+<li><b>Ganancia:</b> \(K_c\) de la condición de módulo evaluada en \(s_d\).</li>
+<li><b>Acciones PID:</b> \(C(s)=K_p\left(1+\dfrac{1}{T_is}+T_ds\right)\); P reduce el error, I lo anula, D amortigua y anticipa.</li>
+<li><b>Ziegler-Nichols en lazo cerrado:</b> con \(K_u\) y \(T_u\) del límite de estabilidad, PID = \(K_p=0{,}6K_u\), \(T_i=0{,}5T_u\), \(T_d=0{,}125T_u\).</li>
+</ul></div>
+<h3 id="t9-metodo">Método paso a paso</h3>
+<ol class="steps"><li>Traduce las especificaciones a un <b>polo deseado</b> \(s_d\) en el plano \(s\).</li>
+<li>Comprueba si \(s_d\) está en el lugar actual: evalúa la <b>condición de ángulo</b> con la planta.</li>
+<li>Si falta fase, diseña un <b>adelanto</b>: elige el método (cancelación o bisectriz) y coloca \(z\) y \(p\).</li>
+<li>Calcula \(K_c\) con la <b>condición de módulo</b> en \(s_d\).</li>
+<li>Comprueba el <b>error</b> resultante. Si no basta, añade una <b>red de atraso</b> con \(\beta\) igual al factor de mejora que necesites, colocada una década por debajo de \(\omega_d\).</li>
+<li><b>Verifica</b>: cierra el lazo, calcula los polos reales y comprueba \(M_p\), \(t_s\) y el error.</li></ol>
+<div class="box trap"><h4>Trampas típicas</h4><ul>
+<li>Diseñar el compensador <b>sin traducir</b> antes las especificaciones a un punto del plano \(s\).</li>
+<li>Colocar el par del atraso <b>lejos</b> del origen: entonces sí mueve el lugar y estropea el transitorio.</li>
+<li>Usar una red de adelanto para mejorar el error: no cambia el tipo del sistema.</li>
+<li>Olvidar comprobar el resultado cerrando el lazo: los polos no dominantes pueden alterar bastante la respuesta.</li>
+<li>Cancelar con el cero un polo <b>inestable</b> de la planta: la cancelación es sólo sobre el papel y el modo inestable sigue ahí.</li>
+<li>Dar el compensador sin la ganancia \(K_c\), que es parte del diseño.</li>
+</ul></div>
+<h3 id="t9-problema">Problema resuelto</h3>
+<div class="prob"><div class="enun"><p class="et">Enunciado</p><p>Una planta tiene \(G(s)=\dfrac{1}{s(s+2)}\) con realimentación unitaria. Diseña un compensador que consiga un <b>sobreimpulso máximo del 16 %</b> y un <b>tiempo de establecimiento de 1 s</b> (criterio del 2 %).</p></div>
+<details class="paso"><summary><span class="pn">✓</span>Ver solución paso a paso</summary><div class="inner"><p><b>1. Especificaciones al plano \(s\).</b></p>
+\[M_p=0{,}16\ \Rightarrow\ \xi=\frac{-\ln0{,}16}{\sqrt{\pi^2+\ln^20{,}16}}=0{,}504\]
+\[t_s=\frac4\sigma=1\ \Rightarrow\ \sigma=4;\quad \omega_n=\frac{4}{0{,}504}=7{,}94;\quad \omega_d=\omega_n\sqrt{1-\xi^2}=6{,}86\]
+\[\boxed{s_d=-4+j6{,}86}\]
+<p><b>2. ¿Está en el lugar actual?</b> Evaluamos la condición de ángulo con \(G(s)=1/(s(s+2))\):</p>
+\[\angle s_d=120{,}2^\circ;\qquad \angle(s_d+2)=106{,}3^\circ\]
+\[\text{fase de }G=-(120{,}2+106{,}3)=-226{,}5^\circ\neq-180^\circ\]
+<p>Faltan \(46{,}5^\circ\) de fase ⇒ hace falta una <b>red de adelanto</b>.</p>
+<p><b>3. Diseño por cancelación.</b> Ponemos el cero en \(z=-2\), cancelando el polo de la planta. Entonces la condición de ángulo queda:</p>
+\[-\angle s_d-\angle(s_d+p)=-180^\circ\ \Rightarrow\ \angle(s_d+p)=180-120{,}2=59{,}8^\circ\]
+\[\tan59{,}8^\circ=\frac{6{,}86}{p-4}\ \Rightarrow\ p-4=\frac{6{,}86}{1{,}715}=4{,}00\ \Rightarrow\ \boxed{p=8}\]
+<p><b>4. Ganancia por condición de módulo:</b></p>
+\[K_c=\left|s_d\right|\cdot\left|s_d+8\right|=7{,}94\cdot7{,}94=\boxed{63{,}0}\]
+\[\boxed{C(s)=\frac{63{,}0\,(s+2)}{s+8}}\]
+<p><b>5. Verificación.</b> La cadena abierta queda \(63/(s(s+8))\) y la ecuación característica \(s^2+8s+63=0\), cuyas raíces son:</p>
+\[s=-4\pm j6{,}86\quad\text{(exactamente }s_d\text{)}\]
+\[\xi=\frac{4}{7{,}94}=0{,}504\ \Rightarrow\ M_p=16{,}0\ \%\ \checkmark;\qquad t_s=\frac44=1{,}00\ \mathrm s\ \checkmark\]
+<p><b>6. ¿Y el error?</b> El sistema sigue siendo de tipo 1, con \(K_v=63/8=7{,}9\) (antes era \(K/2\)). Si se exigiera además \(K_v\ge79\), se añadiría una <b>red de atraso</b> con \(\beta=10\), por ejemplo \(\dfrac{s+0{,}5}{s+0{,}05}\), colocada muy cerca del origen para no mover los polos dominantes.</p>
+<div class="box key"><p><b>Por qué funciona la cancelación:</b> al borrar el polo en \(-2\) y sustituirlo por uno en \(-8\), el lugar deja de curvarse hacia la derecha y pasa a ser una recta vertical en \(\sigma=-4\), que es exactamente donde queríamos los polos. Es el método más rápido cuando el enunciado no prohíbe cancelar.</p></div></div></details></div>
+<h3 id="t9-auto">Autoevaluación</h3>
+<p class="muted">Responde antes de desplegar.</p><details class="paso"><summary><span class="pn">1</span>¿Cuándo hace falta un compensador?</summary><div class="inner"><p>Cuando el punto que cumple las especificaciones <b>no pertenece</b> al lugar de las raíces de la planta: ninguna ganancia lo alcanza.</p></div></details><details class="paso"><summary><span class="pn">2</span>¿Qué mejora una red de adelanto?</summary><div class="inner"><p>El <b>transitorio</b>: aporta fase positiva, atrae el lugar a la izquierda y permite polos más rápidos y mejor amortiguados.</p></div></details><details class="paso"><summary><span class="pn">3</span>¿Qué mejora una red de atraso?</summary><div class="inner"><p>El <b>error en régimen permanente</b>: multiplica la ganancia estática por \(\beta=z/p\) sin alterar apenas el lugar, porque su par cero-polo va muy cerca del origen.</p></div></details><details class="paso"><summary><span class="pn">4</span>¿Por qué el par de la red de atraso debe ir cerca del origen?</summary><div class="inner"><p>Para que su aportación de fase en el polo deseado sea <b>despreciable</b> (menos de unos 5°) y no estropee el transitorio ya conseguido.</p></div></details><details class="paso"><summary><span class="pn">5</span>¿Qué relación tienen las redes con un PID?</summary><div class="inner"><p>La <b>derivativa</b> se comporta como un adelanto (aporta fase, amortigua) y la <b>integral</b> como un atraso llevado al límite, con el polo justo en el origen, que anula el error.</p></div></details><details class="paso"><summary><span class="pn">6</span>¿Qué riesgo tiene cancelar un polo de la planta con el cero del compensador?</summary><div class="inner"><p>Que la cancelación es exacta sólo sobre el papel. Si el polo cancelado fuese <b>inestable</b>, el modo seguiría existiendo en el sistema real y acabaría apareciendo.</p></div></details>
+</section>
+<nav class="pager" aria-label="Páginas"><a href="tema-08.html"><small>← Anterior</small>T8 · El lugar de las raíces</a><a class="nx" href="cuestiones.html"><small>Siguiente →</small>Cuestiones de teoría</a></nav>
+<p class="inicio" style="margin:36px 0 8px;text-align:center;font-size:13px;color:var(--muted)">Guía no oficial de Regulación Automática (UPCT, GIEyA) · Datos tomados del curso <time datetime="2022-09">2022/23</time> (transparencias, formulario oficial, prácticas, seminarios y exámenes de 2012 a 2022) · página creada en noviembre de 2026</p>
+</main>
+</div>
+<script src="app.js"></script>
+<script src="sims.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regulación Automática · Guía para aprobar</title>
+<meta name="description" content="Guía para aprobar Regulación Automática (UPCT, GIEyA): lazo abierto y cerrado, transformada de Laplace, modelado y linealización, diagramas de bloques, análisis temporal de primer y segundo orden, errores en régimen permanente, criterio de Routh, lugar de las raíces y diseño de compensadores de adelanto y atraso, con figuras interactivas y problemas de examen resueltos">
+<meta name="theme-color" content="#3c4fa8">
+<link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<link rel="stylesheet" href="style.css">
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="hub-bar" style="max-width:1180px;margin:0 auto;padding:10px 16px 0"><a href="https://helionacon-ui.github.io/GIEIA-UPCT/" style="display:inline-flex;align-items:center;gap:6px;font:600 13.5px/1 system-ui,sans-serif;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);text-decoration:none">← Todas las guías GIEyA</a><p class="fecha" style="margin:6px 0 0;max-width:none;font:13px/1.45 system-ui,sans-serif;color:var(--muted)">Datos tomados del curso <time datetime="2022-09">2022/23</time> (transparencias de los temas, formulario oficial, guía docente, prácticas y el 1.er parcial resuelto de 2022/23) · página creada en noviembre de 2026</p></div>
+<header class="hero"><div class="hero-in"><div class="hero-txt">
+<div class="eyebrow">UPCT · GIEyA · 2.º curso · 2.º cuatrimestre</div>
+<h1>Regulación <span>Automática</span></h1><p class="sub">De la ecuación diferencial al compensador · Guía para aprobar</p>
+<div class="stats"><div><b>9</b><span>temas, del modelado al diseño de compensadores</span></div><div><b>11</b><span>figuras interactivas que simulan de verdad</span></div><div><b>8</b><span>problemas de examen resueltos</span></div><div><b>35</b><span>cuestiones de teoría respondidas</span></div></div>
+<div class="cta"><a class="btn pri" href="#cero">Empieza desde cero</a><a class="btn" href="cuestiones.html">Teoría</a><a class="btn" href="examenes.html">Exámenes</a><a class="btn" href="problemas.html">Qué cae</a><a class="btn" href="laboratorio.html">Prácticas</a><a class="btn" href="formulario.html">Formulario</a></div>
+</div>
+<div aria-hidden="true" class="hero-art"><svg class="zart" viewBox="-120 -120 240 240">
+<circle cx="-72" cy="0" r="13" fill="none" stroke="var(--line)" stroke-width="2"></circle>
+<text fill="var(--muted)" font-family="IBM Plex Mono, monospace" font-size="14" text-anchor="middle" x="-72" y="5">&#8722;</text>
+<rect x="-36" y="-18" width="48" height="36" rx="4" fill="none" stroke="var(--accent)" stroke-width="2.5"></rect>
+<text fill="var(--accent)" font-family="IBM Plex Mono, monospace" font-size="13" text-anchor="middle" x="-12" y="5">C</text>
+<rect x="34" y="-18" width="48" height="36" rx="4" fill="none" stroke="var(--warn)" stroke-width="2.5"></rect>
+<text fill="var(--warn)" font-family="IBM Plex Mono, monospace" font-size="13" text-anchor="middle" x="58" y="5">G</text>
+<line x1="-100" y1="0" x2="-85" y2="0" stroke="var(--muted)" stroke-width="2"></line>
+<line x1="-59" y1="0" x2="-36" y2="0" stroke="var(--muted)" stroke-width="2"></line>
+<line x1="12" y1="0" x2="34" y2="0" stroke="var(--muted)" stroke-width="2"></line>
+<line x1="82" y1="0" x2="104" y2="0" stroke="var(--muted)" stroke-width="2"></line>
+<path d="M 94 0 L 94 48 L -72 48 L -72 13" fill="none" stroke="var(--muted)" stroke-width="2"></path>
+<circle cx="94" cy="0" r="3" fill="var(--muted)"></circle>
+<path d="M -92 -74 q 28 -26 50 10 q 20 26 44 -2 q 16 -18 36 -4" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"></path>
+<line x1="-96" y1="-50" x2="92" y2="-50" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 4"></line>
+<text fill="var(--muted)" font-family="IBM Plex Mono, monospace" font-size="11" text-anchor="middle" x="0" y="88">&#958; &#183; &#969;n &#183; Mp &#183; ts &#183; Kv &#183; Routh &#183; LDR</text></svg>
+<p class="art-cap">Casi todo se decide por dónde acaban los polos del lazo cerrado.</p></div></div></header><a href="#top" class="totop" id="totop" aria-label="Volver arriba">↑</a>
+<div class="wrap" id="top">
+<nav aria-label="Índice" class="toc"><a href="index.html" style="--tc:var(--c0)" class="on" aria-current="page">Portada</a><div class="grp">Empezar</div><a href="index.html#cero" style="--tc:var(--c0)" class="on" aria-current="page">Empieza aquí desde cero</a><a href="plan.html" style="--tc:var(--c0)">Cómo es la evaluación</a><a href="index.html#progreso" style="--tc:var(--c0)" class="on" aria-current="page">Tu progreso</a><div class="grp">Modelado de sistemas</div><a href="tema-01.html" style="--tc:var(--c2)">T1 Qué es controlar un sistema</a><a href="tema-02.html" style="--tc:var(--c3)">T2 Señales y transformada de Laplace</a><a href="tema-03.html" style="--tc:var(--c4)">T3 Modelado de sistemas físicos y linealización</a><a href="tema-04.html" style="--tc:var(--c5)">T4 Diagramas de bloques y función de transferencia</a><div class="grp">Análisis y diseño</div><a href="tema-05.html" style="--tc:var(--c6)">T5 Análisis temporal: primer y segundo orden</a><a href="tema-06.html" style="--tc:var(--c7)">T6 Sistemas realimentados: errores y sensibilidad</a><a href="tema-07.html" style="--tc:var(--c8)">T7 Estabilidad y criterio de Routh-Hurwitz</a><a href="tema-08.html" style="--tc:var(--c1)">T8 El lugar de las raíces</a><a href="tema-09.html" style="--tc:var(--c2)">T9 Diseño de compensadores de adelanto y atraso</a><div class="grp">Practicar</div><a href="cuestiones.html" style="--tc:var(--c8)">Cuestiones de teoría respondidas</a><a href="examenes.html" style="--tc:var(--c8)">Problemas de examen resueltos</a><a href="problemas.html" style="--tc:var(--c8)">Qué cae en cada parcial</a><a href="laboratorio.html" style="--tc:var(--c7)">Prácticas y MATLAB</a><a href="formulario.html" style="--tc:var(--c8)">Formulario</a></nav>
+<main>
+<section class="sec" style="--tc:var(--c0);--tcs:var(--c0s)">
+<div class="sh"><span aria-hidden="true" class="badge">0</span><div class="shx"><p class="kick">Empezar</p><h2 id="cero">Empieza aquí desde cero</h2></div></div>
+<div class="zero"><p class="ft">Cómo usar la guía</p>
+<ol><li>Entiende el <b>hilo de la asignatura</b>: modelar la planta (temas 2 a 4), analizar cómo responde (temas 5 a 8) y diseñar un regulador que la haga comportarse como queremos (tema 9). Cada tema usa lo del anterior.</li>
+<li>Interioriza la idea central: <b>todo se decide por la posición de los polos del lazo cerrado</b>. Sobreimpulso, rapidez, estabilidad y error son cuatro formas de mirar lo mismo.</li>
+<li>Haz las <b>figuras interactivas</b>: no son dibujos, simulan de verdad (integración Runge-Kutta y cálculo real de raíces), así que puedes comprobar con ellas tus resultados.</li>
+<li>Resuelve los <a href="examenes.html">problemas de examen</a> antes de mirar la solución. Tres de ellos son del <b>1.er parcial de 2022/23</b>.</li>
+<li>Guarda los <b>scripts de MATLAB</b> de las prácticas: valen el 20 % de la nota y se evalúan por las memorias.</li></ol></div>
+<h3 id="mapa">Mapa de temas</h3>
+<div class="map"><a href="tema-01.html"><b>T1</b>Qué es controlar un sistema</a><a href="tema-02.html"><b>T2</b>Señales y transformada de Laplace</a><a href="tema-03.html"><b>T3</b>Modelado de sistemas físicos y linealización</a><a href="tema-04.html"><b>T4</b>Diagramas de bloques y función de transferencia</a><a href="tema-05.html"><b>T5</b>Análisis temporal: primer y segundo orden</a><a href="tema-06.html"><b>T6</b>Sistemas realimentados: errores y sensibilidad</a><a href="tema-07.html"><b>T7</b>Estabilidad y criterio de Routh-Hurwitz</a><a href="tema-08.html"><b>T8</b>El lugar de las raíces</a><a href="tema-09.html"><b>T9</b>Diseño de compensadores de adelanto y atraso</a></div>
+<div class="box key"><p><b>De dónde sale esta guía.</b> La <b>guía docente firmada</b> del curso 2022/23, las transparencias de los temas, el <b>formulario oficial</b> de la asignatura, los boletines de problemas resueltos de cada tema, el <b>primer parcial resuelto</b> de 2022/23 y los guiones de las seis prácticas.</p></div>
+<div class="box trap"><h4>Cómo es la evaluación</h4><p><b>Evaluación continua:</b> dos parciales que suman el <b>70 %</b>, prácticas <b>20 %</b> (memorias e informes) y trabajo cooperativo y seminarios <b>10 %</b>. <b>Evaluación final:</b> una única prueba que vale el 100 %; quien haya superado una parte en continua y quiera repetirla en final, debe <b>renunciar</b> a la nota obtenida.</p></div>
+<h3 id="progreso">Tu progreso</h3>
+<p class="muted">Se guarda en este navegador.</p>
+<div class="bar"><i id="prog-bar"></i></div><p id="prog-txt" class="muted"></p>
+<div class="check"><input type="checkbox" id="c1"><label for="c1">T1 · Qué es controlar un sistema</label></div><div class="check"><input type="checkbox" id="c2"><label for="c2">T2 · Señales y transformada de Laplace</label></div><div class="check"><input type="checkbox" id="c3"><label for="c3">T3 · Modelado de sistemas físicos y linealización</label></div><div class="check"><input type="checkbox" id="c4"><label for="c4">T4 · Diagramas de bloques y función de transferencia</label></div><div class="check"><input type="checkbox" id="c5"><label for="c5">T5 · Análisis temporal: primer y segundo orden</label></div><div class="check"><input type="checkbox" id="c6"><label for="c6">T6 · Sistemas realimentados: errores y sensibilidad</label></div><div class="check"><input type="checkbox" id="c7"><label for="c7">T7 · Estabilidad y criterio de Routh-Hurwitz</label></div><div class="check"><input type="checkbox" id="c8"><label for="c8">T8 · El lugar de las raíces</label></div><div class="check"><input type="checkbox" id="c9"><label for="c9">T9 · Diseño de compensadores de adelanto y atraso</label></div>
+</section><p class="inicio" style="margin:36px 0 8px;text-align:center;font-size:13px;color:var(--muted)">Guía no oficial de Regulación Automática (UPCT, GIEyA) · Datos tomados del curso <time datetime="2022-09">2022/23</time> (transparencias, formulario oficial, prácticas, seminarios y exámenes de 2012 a 2022) · página creada en noviembre de 2026</p>
+</main>
+</div>
+<script src="app.js"></script>
+<script src="sims.js"></script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>T5 Análisis temporal: primer y segundo orden · Regulación Automática · Guía para aprobar</title>
+<meta name="description" content="Regulación Automática (UPCT, GIEyA): tema 5, Análisis temporal: primer y segundo orden">
+<meta name="theme-color" content="#3c4fa8">
+<link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<link rel="stylesheet" href="style.css">
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="hub-bar" style="max-width:1180px;margin:0 auto;padding:10px 16px 0"><a href="https://helionacon-ui.github.io/GIEIA-UPCT/" style="display:inline-flex;align-items:center;gap:6px;font:600 13.5px/1 system-ui,sans-serif;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);text-decoration:none">← Todas las guías GIEyA</a><p class="fecha" style="margin:6px 0 0;max-width:none;font:13px/1.45 system-ui,sans-serif;color:var(--muted)">Datos tomados del curso <time datetime="2022-09">2022/23</time> (transparencias de los temas, formulario oficial, guía docente, prácticas y el 1.er parcial resuelto de 2022/23) · página creada en noviembre de 2026</p></div>
+<div class="crumb"><a href="index.html">Regulación Automática</a><span class="sep">›</span><span>Análisis y diseño</span><span class="sep">›</span><span>T5 · Análisis temporal: primer y segundo orden</span></div><a href="#top" class="totop" id="totop" aria-label="Volver arriba">↑</a>
+<div class="wrap" id="top">
+<nav aria-label="Índice" class="toc"><a href="index.html" style="--tc:var(--c0)">Portada</a><div class="grp">Empezar</div><a href="index.html#cero" style="--tc:var(--c0)">Empieza aquí desde cero</a><a href="plan.html" style="--tc:var(--c0)">Cómo es la evaluación</a><a href="index.html#progreso" style="--tc:var(--c0)">Tu progreso</a><div class="grp">Modelado de sistemas</div><a href="tema-01.html" style="--tc:var(--c2)">T1 Qué es controlar un sistema</a><a href="tema-02.html" style="--tc:var(--c3)">T2 Señales y transformada de Laplace</a><a href="tema-03.html" style="--tc:var(--c4)">T3 Modelado de sistemas físicos y linealización</a><a href="tema-04.html" style="--tc:var(--c5)">T4 Diagramas de bloques y función de transferencia</a><div class="grp">Análisis y diseño</div><a href="tema-05.html" style="--tc:var(--c6)" class="on" aria-current="page">T5 Análisis temporal: primer y segundo orden</a><a href="tema-06.html" style="--tc:var(--c7)">T6 Sistemas realimentados: errores y sensibilidad</a><a href="tema-07.html" style="--tc:var(--c8)">T7 Estabilidad y criterio de Routh-Hurwitz</a><a href="tema-08.html" style="--tc:var(--c1)">T8 El lugar de las raíces</a><a href="tema-09.html" style="--tc:var(--c2)">T9 Diseño de compensadores de adelanto y atraso</a><div class="grp">Practicar</div><a href="cuestiones.html" style="--tc:var(--c8)">Cuestiones de teoría respondidas</a><a href="examenes.html" style="--tc:var(--c8)">Problemas de examen resueltos</a><a href="problemas.html" style="--tc:var(--c8)">Qué cae en cada parcial</a><a href="laboratorio.html" style="--tc:var(--c7)">Prácticas y MATLAB</a><a href="formulario.html" style="--tc:var(--c8)">Formulario</a></nav>
+<main>
+<section class="sec tema" style="--tc:var(--c6);--tcs:var(--c6s)">
+<div class="sh"><span aria-hidden="true" class="badge">5</span><div class="shx"><p class="kick">Análisis y diseño · Tema 5</p><h2 id="t5">Análisis temporal: primer y segundo orden</h2><div class="tags"><span class="tag">Análisis y diseño</span><span class="tag">2.º parcial</span></div></div></div>
+<div class="zero"><p class="ft">Desde cero</p><p><b>Objetivo:</b> relacionar la posición de los polos con la forma de la respuesta y calcular sobreimpulso, tiempo de pico y tiempo de establecimiento.</p><ul>
+<li>La respuesta de un sistema está escrita en la <b>posición de sus polos</b>. Analizar en el tiempo es traducir esa posición a números: cuánto tarda, cuánto se pasa, cuánto oscila.</li>
+<li>Un <b>primer orden</b> \(K/(1+Ts)\) responde al escalón con una exponencial: llega al 63 % en \(T\) y se considera establecido en \(3T\) (criterio del 5 %).</li>
+<li>Un <b>segundo orden</b> queda definido por dos números: \(\xi\) (amortiguamiento) y \(\omega_n\) (frecuencia natural). Todo lo demás se deduce de ellos.</li>
+<li>El <b>sobreimpulso depende sólo de \(\xi\)</b>; la <b>rapidez</b> depende de \(\sigma=\xi\omega_n\), la distancia del polo al eje imaginario.</li>
+<li>En el plano \(s\): \(\xi=\cos\theta\), donde \(\theta\) es el ángulo del polo con el eje real negativo. Por eso las especificaciones se traducen en <b>regiones</b> del plano.</li>
+<li>Un <b>polo adicional</b> lejano ralentiza algo y reduce el sobreimpulso; un <b>cero</b> cercano lo aumenta. Si están cinco veces más lejos que los dominantes, se pueden despreciar.</li>
+</ul></div>
+<details class="nom"><summary><span aria-hidden="true" class="nom-ic">Aa</span>Nomenclatura del tema 5 <span class="src">8 entradas</span></summary><div class="inner">
+<div class="tw"><table><tr><th>Símbolo</th><th>Significado</th><th>Unidad · nota</th></tr><tr><td class="sym">K</td><td>ganancia estática</td><td class="u">G(0)</td></tr><tr><td class="sym">T</td><td>constante de tiempo</td><td class="u">s</td></tr><tr><td class="sym">ξ</td><td>amortiguamiento</td><td class="u">cos θ</td></tr><tr><td class="sym">ωn</td><td>frecuencia natural</td><td class="u">rad/s</td></tr><tr><td class="sym">ωd</td><td>frecuencia amortiguada</td><td class="u">ωn√(1−ξ²)</td></tr><tr><td class="sym">σ</td><td>ξ·ωn</td><td class="u">parte real del polo</td></tr><tr><td class="sym">Mp</td><td>sobreimpulso</td><td class="u">%</td></tr><tr><td class="sym">tp, ts, tr</td><td>tiempos de pico, establecimiento y subida</td><td class="u">s</td></tr></table></div></div></details>
+<figure class="fig"><p class="ft">Figura interactiva - respuesta de segundo orden y plano s</p><div data-sim="segundo"></div><figcaption>Mueve los controles y observa cómo cambia el resultado: es el mismo cálculo que hay que saber hacer a mano en el examen.</figcaption></figure>
+<h3 id="t5-formulas">Fórmulas que hay que saber usar</h3>
+<div class="box key"><ul>
+<li><b>Primer orden:</b> \(G=\dfrac{K}{1+Ts}\) · \(y(t)=K\left(1-e^{-t/T}\right)\) · \(y(T)=0{,}632K\) · pendiente inicial \(K/T\) · \(t_s\approx3T\) (5 %) o \(4T\) (2 %).</li>
+<li><b>Segundo orden:</b> \(G=\dfrac{K\omega_n^2}{s^2+2\xi\omega_ns+\omega_n^2}\); polos en \(-\sigma\pm j\omega_d\).</li>
+<li>\(\sigma=\xi\omega_n\) · \(\omega_d=\omega_n\sqrt{1-\xi^2}\) · \(\xi=\cos\theta\).</li>
+<li><b>Sobreimpulso:</b> \(M_p=e^{-\pi\xi/\sqrt{1-\xi^2}}=e^{-\pi/\tan\theta}\) · en porcentaje, \(M_p=\dfrac{y_p-y_{rp}}{y_{rp}}\cdot100\).</li>
+<li><b>Tiempo de pico:</b> \(t_p=\dfrac{\pi}{\omega_d}\) · <b>tiempo de establecimiento:</b> \(t_s\approx\dfrac{3}{\sigma}\) (5 %) o \(\dfrac{4}{\sigma}\) (2 %).</li>
+<li><b>Tiempo de subida</b> (0-100 %, subamortiguado): \(t_r=\dfrac{\pi-\theta}{\omega_d}\).</li>
+<li><b>Ganancia estática:</b> \(K=\displaystyle\lim_{s\to0}G(s)=G(0)\); para un escalón de amplitud \(u_0\) la salida acaba en \(Ku_0\).</li>
+<li><b>Casos:</b> \(\xi=0\) oscilación mantenida · \(0<\xi<1\) subamortiguado · \(\xi=1\) crítico · \(\xi>1\) sobreamortiguado (dos polos reales).</li>
+</ul></div>
+<h3 id="t5-metodo">Método paso a paso</h3>
+<ol class="steps"><li>Lleva la función de transferencia a la <b>forma canónica</b> y lee \(K\), \(\xi\) y \(\omega_n\).</li>
+<li>Localiza los <b>polos</b>: \(-\sigma\pm j\omega_d\), y comprueba si hay otros polos o ceros que influyan.</li>
+<li>Calcula las especificaciones con sus fórmulas: \(M_p\) a partir de \(\xi\), \(t_p\) de \(\omega_d\) y \(t_s\) de \(\sigma\).</li>
+<li>Si el problema va al revés (dan \(M_p\) y \(t_s\) y piden el sistema), despeja primero \(\xi\) del sobreimpulso y luego \(\omega_n\) del tiempo.</li>
+<li>Dibuja la respuesta: valor final, pico, y cuándo se establece.</li>
+<li><b>Comprueba</b> el valor final con \(G(0)\) y el sentido físico de los tiempos.</li></ol>
+<div class="box trap"><h4>Trampas típicas</h4><ul>
+<li>Mezclar los <b>criterios</b> de \(t_s\): \(3/\sigma\) es el del 5 % y \(4/\sigma\) el del 2 %. Hay que decir cuál se usa.</li>
+<li>Calcular \(M_p\) sobre el valor final equivocado: es respecto de \(y_{rp}\), no de la referencia, si la ganancia no es 1.</li>
+<li>Usar las fórmulas de segundo orden cuando hay <b>ceros cerca</b> o un tercer polo próximo: dejan de valer.</li>
+<li>Olvidar que \(\xi>1\) significa <b>sin sobreimpulso</b>: entonces no hay \(t_p\) ni \(M_p\) que calcular.</li>
+<li>Confundir \(\omega_n\) (frecuencia natural, módulo del polo) con \(\omega_d\) (frecuencia amortiguada, parte imaginaria).</li>
+<li>No normalizar la función de transferencia antes de leer \(\xi\) y \(\omega_n\).</li>
+</ul></div>
+<h3 id="t5-problema">Problema resuelto</h3>
+<div class="prob"><div class="enun"><p class="et">Enunciado</p><p>Se quiere que un sistema de segundo orden tenga un <b>sobreimpulso máximo del 20 %</b> y un <b>tiempo de establecimiento de 2 s</b> (criterio del 2 %). a) Determina \(\xi\), \(\omega_n\) y la posición de los polos. b) Calcula \(t_p\) y \(t_r\). c) Escribe la función de transferencia si la ganancia estática debe ser 1.</p></div>
+<details class="paso"><summary><span class="pn">✓</span>Ver solución paso a paso</summary><div class="inner"><p><b>a) De las especificaciones a los polos.</b> Del sobreimpulso:</p>
+\[M_p=e^{-\pi\xi/\sqrt{1-\xi^2}}=0{,}20\ \Rightarrow\ \xi=\frac{-\ln0{,}20}{\sqrt{\pi^2+\ln^20{,}20}}=\boxed{0{,}456}\]
+<p>Del tiempo de establecimiento con el criterio del 2 %:</p>
+\[t_s=\frac4{\xi\omega_n}=2\ \Rightarrow\ \sigma=\xi\omega_n=2\ \mathrm{s^{-1}}\ \Rightarrow\ \omega_n=\frac{2}{0{,}456}=\boxed{4{,}39\ \mathrm{rad/s}}\]
+\[\omega_d=\omega_n\sqrt{1-\xi^2}=4{,}39\sqrt{1-0{,}456^2}=3{,}90\ \mathrm{rad/s}\]
+\[\text{Polos: }s=-2{,}00\pm j3{,}90\]
+<p>El ángulo con el eje real negativo es \(\theta=\arccos0{,}456=62{,}9^\circ\).</p>
+<p><b>b) Tiempos característicos:</b></p>
+\[t_p=\frac{\pi}{\omega_d}=\frac{\pi}{3{,}90}=\boxed{0{,}805\ \mathrm s};\qquad t_r=\frac{\pi-\theta}{\omega_d}=\frac{\pi-1{,}098}{3{,}90}=0{,}524\ \mathrm s\]
+<p><b>c) Función de transferencia:</b></p>
+\[G(s)=\frac{\omega_n^2}{s^2+2\xi\omega_ns+\omega_n^2}=\boxed{\frac{19{,}25}{s^2+4s+19{,}25}}\]
+<p>Comprobación: \(G(0)=19{,}25/19{,}25=1\) ✓, y los polos de \(s^2+4s+19{,}25\) son \(-2\pm j3{,}90\) ✓.</p>
+<div class="box key"><p><b>Cómo se lee esto en el plano \(s\):</b> el sobreimpulso del 20 % fija una <b>recta</b> que pasa por el origen con \(\theta=62{,}9^\circ\); el tiempo de establecimiento fija una <b>recta vertical</b> en \(\sigma=2\). La región válida es la intersección, y el punto de corte es el polo buscado. Ésta es exactamente la idea con la que se diseñan compensadores en el tema 9.</p></div></div></details></div>
+<h3 id="t5-auto">Autoevaluación</h3>
+<p class="muted">Responde antes de desplegar.</p><details class="paso"><summary><span class="pn">1</span>¿De qué depende el sobreimpulso?</summary><div class="inner"><p><b>Sólo del amortiguamiento \(\xi\)</b>: \(M_p=e^{-\pi\xi/\sqrt{1-\xi^2}}\). En el plano \(s\) corresponde al ángulo del polo, porque \(\xi=\cos\theta\).</p></div></details><details class="paso"><summary><span class="pn">2</span>¿De qué depende el tiempo de establecimiento?</summary><div class="inner"><p>De \(\sigma=\xi\omega_n\), la <b>parte real</b> del polo: \(t_s\approx3/\sigma\) (5 %) o \(4/\sigma\) (2 %). Cuanto más a la izquierda está el polo, más rápido.</p></div></details><details class="paso"><summary><span class="pn">3</span>¿Qué diferencia hay entre \(\omega_n\) y \(\omega_d\)?</summary><div class="inner"><p>\(\omega_n\) es el <b>módulo</b> del polo (frecuencia natural sin amortiguar) y \(\omega_d=\omega_n\sqrt{1-\xi^2}\) es la <b>parte imaginaria</b>, la frecuencia a la que realmente oscila.</p></div></details><details class="paso"><summary><span class="pn">4</span>¿Cuándo se puede despreciar un polo?</summary><div class="inner"><p>Cuando está al menos <b>cinco veces más lejos</b> del eje imaginario que los polos dominantes: su exponencial se apaga mucho antes y apenas altera la respuesta.</p></div></details><details class="paso"><summary><span class="pn">5</span>¿Qué efecto tiene un cero cercano?</summary><div class="inner"><p><b>Aumenta el sobreimpulso</b> y acelera la respuesta inicial. Si el cero está en el semiplano derecho, además produce una respuesta inversa al principio.</p></div></details><details class="paso"><summary><span class="pn">6</span>¿Cómo se identifica un primer orden a partir de su respuesta?</summary><div class="inner"><p>Por la <b>pendiente inicial</b> (\(K/T\)) y por el valor en \(t=T\), que es el <b>63,2 %</b> del final. Son los dos datos que se miden en el laboratorio.</p></div></details>
+</section>
+<nav class="pager" aria-label="Páginas"><a href="tema-04.html"><small>← Anterior</small>T4 · Diagramas de bloques y función de transferencia</a><a class="nx" href="tema-06.html"><small>Siguiente →</small>T6 · Sistemas realimentados: errores y sensibilidad</a></nav>
+<p class="inicio" style="margin:36px 0 8px;text-align:center;font-size:13px;color:var(--muted)">Guía no oficial de Regulación Automática (UPCT, GIEyA) · Datos tomados del curso <time datetime="2022-09">2022/23</time> (transparencias, formulario oficial, prácticas, seminarios y exámenes de 2012 a 2022) · página creada en noviembre de 2026</p>
+</main>
+</div>
+<script src="app.js"></script>
+<script src="sims.js"></script>
+</body>
+</html>

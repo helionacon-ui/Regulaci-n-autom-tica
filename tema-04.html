@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>T4 Diagramas de bloques y función de transferencia · Regulación Automática · Guía para aprobar</title>
+<meta name="description" content="Regulación Automática (UPCT, GIEyA): tema 4, Diagramas de bloques y función de transferencia">
+<meta name="theme-color" content="#3c4fa8">
+<link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<link rel="stylesheet" href="style.css">
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="hub-bar" style="max-width:1180px;margin:0 auto;padding:10px 16px 0"><a href="https://helionacon-ui.github.io/GIEIA-UPCT/" style="display:inline-flex;align-items:center;gap:6px;font:600 13.5px/1 system-ui,sans-serif;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);text-decoration:none">← Todas las guías GIEyA</a><p class="fecha" style="margin:6px 0 0;max-width:none;font:13px/1.45 system-ui,sans-serif;color:var(--muted)">Datos tomados del curso <time datetime="2022-09">2022/23</time> (transparencias de los temas, formulario oficial, guía docente, prácticas y el 1.er parcial resuelto de 2022/23) · página creada en noviembre de 2026</p></div>
+<div class="crumb"><a href="index.html">Regulación Automática</a><span class="sep">›</span><span>Modelado de sistemas</span><span class="sep">›</span><span>T4 · Diagramas de bloques y función de transferencia</span></div><a href="#top" class="totop" id="totop" aria-label="Volver arriba">↑</a>
+<div class="wrap" id="top">
+<nav aria-label="Índice" class="toc"><a href="index.html" style="--tc:var(--c0)">Portada</a><div class="grp">Empezar</div><a href="index.html#cero" style="--tc:var(--c0)">Empieza aquí desde cero</a><a href="plan.html" style="--tc:var(--c0)">Cómo es la evaluación</a><a href="index.html#progreso" style="--tc:var(--c0)">Tu progreso</a><div class="grp">Modelado de sistemas</div><a href="tema-01.html" style="--tc:var(--c2)">T1 Qué es controlar un sistema</a><a href="tema-02.html" style="--tc:var(--c3)">T2 Señales y transformada de Laplace</a><a href="tema-03.html" style="--tc:var(--c4)">T3 Modelado de sistemas físicos y linealización</a><a href="tema-04.html" style="--tc:var(--c5)" class="on" aria-current="page">T4 Diagramas de bloques y función de transferencia</a><div class="grp">Análisis y diseño</div><a href="tema-05.html" style="--tc:var(--c6)">T5 Análisis temporal: primer y segundo orden</a><a href="tema-06.html" style="--tc:var(--c7)">T6 Sistemas realimentados: errores y sensibilidad</a><a href="tema-07.html" style="--tc:var(--c8)">T7 Estabilidad y criterio de Routh-Hurwitz</a><a href="tema-08.html" style="--tc:var(--c1)">T8 El lugar de las raíces</a><a href="tema-09.html" style="--tc:var(--c2)">T9 Diseño de compensadores de adelanto y atraso</a><div class="grp">Practicar</div><a href="cuestiones.html" style="--tc:var(--c8)">Cuestiones de teoría respondidas</a><a href="examenes.html" style="--tc:var(--c8)">Problemas de examen resueltos</a><a href="problemas.html" style="--tc:var(--c8)">Qué cae en cada parcial</a><a href="laboratorio.html" style="--tc:var(--c7)">Prácticas y MATLAB</a><a href="formulario.html" style="--tc:var(--c8)">Formulario</a></nav>
+<main>
+<section class="sec tema" style="--tc:var(--c5);--tcs:var(--c5s)">
+<div class="sh"><span aria-hidden="true" class="badge">4</span><div class="shx"><p class="kick">Modelado de sistemas · Tema 4</p><h2 id="t4">Diagramas de bloques y función de transferencia</h2><div class="tags"><span class="tag">Modelado de sistemas</span><span class="tag">1.er parcial</span></div></div></div>
+<div class="zero"><p class="ft">Desde cero</p><p><b>Objetivo:</b> construir el diagrama de bloques a partir de las ecuaciones, simplificarlo con las reglas del álgebra de bloques y aplicar superposición con varias entradas.</p><ul>
+<li>Un diagrama de bloques es la <b>representación gráfica</b> de las ecuaciones transformadas: cada ecuación despejada es un bloque o un sumador.</li>
+<li>Para <b>construirlo</b>: despeja cada variable en su ecuación, dibuja el bloque que la produce y conecta las señales. Empieza por la salida y ve hacia atrás, o por la entrada y ve hacia delante.</li>
+<li>Para <b>simplificarlo</b> hay tres reglas básicas: serie (producto), paralelo (suma) y realimentación. Lo demás es mover sumadores y puntos de bifurcación.</li>
+<li>Con <b>varias entradas</b> (referencia y perturbación) se aplica <b>superposición</b>: se anulan todas menos una, se calcula, y al final se suman las contribuciones.</li>
+<li>La <b>función de transferencia</b> es el cociente salida/entrada con condiciones iniciales nulas. Sólo tiene sentido para sistemas LTI.</li>
+<li>Una alternativa a simplificar a mano es la <b>fórmula de Mason</b>, útil cuando hay lazos entrelazados.</li>
+</ul></div>
+<details class="nom"><summary><span aria-hidden="true" class="nom-ic">Aa</span>Nomenclatura del tema 4 <span class="src">8 entradas</span></summary><div class="inner">
+<div class="tw"><table><tr><th>Símbolo</th><th>Significado</th><th>Unidad · nota</th></tr><tr><td class="sym">G(s)</td><td>función de transferencia</td><td class="u">Y/U, c.i. nulas</td></tr><tr><td class="sym">serie</td><td>G₁·G₂</td><td class="u"></td></tr><tr><td class="sym">paralelo</td><td>G₁ + G₂</td><td class="u"></td></tr><tr><td class="sym">realimentación</td><td>G₁/(1+G₁G₂)</td><td class="u">negativa</td></tr><tr><td class="sym">sumador</td><td>punto de suma o resta</td><td class="u"></td></tr><tr><td class="sym">bifurcación</td><td>punto de toma de señal</td><td class="u"></td></tr><tr><td class="sym">Mason</td><td>fórmula de ganancia</td><td class="u">lazos entrelazados</td></tr><tr><td class="sym">superposición</td><td>una entrada cada vez</td><td class="u">sistemas lineales</td></tr></table></div></div></details>
+<figure class="fig"><p class="ft">Figura interactiva - reduccion de diagramas de bloques</p><div data-sim="bloques"></div><figcaption>Mueve los controles y observa cómo cambia el resultado: es el mismo cálculo que hay que saber hacer a mano en el examen.</figcaption></figure>
+<h3 id="t4-formulas">Fórmulas que hay que saber usar</h3>
+<div class="box key"><ul>
+<li><b>Serie:</b> \(G=G_1G_2\) · <b>Paralelo:</b> \(G=G_1\pm G_2\).</li>
+<li><b>Realimentación:</b> \(G=\dfrac{G_1}{1\pm G_1G_2}\); el signo del denominador es el <b>contrario</b> al del comparador (negativa ⇒ \(+\)).</li>
+<li><b>Mover un sumador hacia delante</b> de un bloque \(G\): la señal que se suma debe multiplicarse por \(G\). Hacia atrás: dividirse por \(G\).</li>
+<li><b>Mover una bifurcación hacia delante</b> de \(G\): la rama debe dividirse por \(G\). Hacia atrás: multiplicarse por \(G\).</li>
+<li><b>Superposición:</b> \(Y=T_u(s)U(s)+T_d(s)D(s)\), con cada \(T\) calculada anulando la otra entrada.</li>
+<li><b>Perturbación a la salida de la planta,</b> con regulador \(C\) y planta \(G\): \(\dfrac{Y}{D}=\dfrac{1}{1+CGH}\).</li>
+<li><b>Fórmula de Mason:</b> \(T=\dfrac{1}{\Delta}\sum_kP_k\Delta_k\), con \(\Delta=1-\sum L_i+\sum L_iL_j-\dots\).</li>
+<li><b>De la función de transferencia a la ecuación diferencial:</b> multiplicar en cruz y sustituir cada \(s^n\) por \(d^n/dt^n\).</li>
+</ul></div>
+<h3 id="t4-metodo">Método paso a paso</h3>
+<ol class="steps"><li>Escribe <b>todas</b> las ecuaciones en el dominio de \(s\) y numéralas.</li>
+<li>Despeja en cada una la variable que produce, y dibuja su bloque.</li>
+<li>Une las señales; los puntos de resta son los comparadores.</li>
+<li>Simplifica de <b>dentro hacia fuera</b>: cierra primero los lazos internos.</li>
+<li>Si hay varias entradas, aplica <b>superposición</b> una por una.</li>
+<li>Comprueba el resultado con la <b>ganancia estática</b>: haz \(s=0\) y mira si el número tiene sentido físico.</li></ol>
+<div class="box trap"><h4>Trampas típicas</h4><ul>
+<li>Equivocar el <b>signo del denominador</b> en la fórmula de realimentación.</li>
+<li>Mover un sumador o una bifurcación <b>sin ajustar</b> la rama con el bloque correspondiente.</li>
+<li>Intentar simplificar lazos entrelazados sin desenredarlos antes: ahí conviene Mason.</li>
+<li>Olvidar que el <b>sensor</b> está en \(H(s)\) y que si no es unitario, la salida que se compara no es la salida real.</li>
+<li>Sumar las contribuciones de varias entradas <b>sin</b> haber anulado las demás al calcular cada una.</li>
+<li>Al pasar a ecuación diferencial, no respetar el orden de las derivadas del numerador (las de la entrada).</li>
+</ul></div>
+<h3 id="t4-problema">Problema resuelto</h3>
+<div class="prob"><div class="enun"><p class="et">Enunciado</p><p>Un lazo tiene un regulador \(R(s)=\dfrac{2}{s(s+0{,}5)}\) en serie con una planta \(G(s)\) y una realimentación \(H(s)\). De \(G\) se sabe que ante la entrada \(v(t)=t+1\) responde con \(y(t)=\dfrac23+t-\dfrac23e^{-3t}\); de la realimentación, que \(\dfrac{dw}{dt}+3w=4y\). Determina \(G(s)\), \(H(s)\) y la función de transferencia del lazo cerrado. <span class="muted">(Adaptado del 1.er parcial, curso 2022/23)</span></p></div>
+<details class="paso"><summary><span class="pn">✓</span>Ver solución paso a paso</summary><div class="inner"><p><b>1. Obtener \(G(s)\) de la respuesta temporal.</b> Transformamos entrada y salida:</p>
+\[V(s)=\frac1{s^2}+\frac1s=\frac{s+1}{s^2};\qquad Y(s)=\frac{2}{3s}+\frac1{s^2}-\frac{2}{3(s+3)}\]
+<p>Reducimos \(Y(s)\) a común denominador:</p>
+\[Y(s)=\frac23\left(\frac1s-\frac1{s+3}\right)+\frac1{s^2}=\frac{2}{s(s+3)}+\frac1{s^2}=\frac{3(s+1)}{s^2(s+3)}\]
+\[G(s)=\frac{Y(s)}{V(s)}=\frac{3(s+1)}{s^2(s+3)}\cdot\frac{s^2}{s+1}=\boxed{\frac{3}{s+3}}\]
+<p><b>2. Obtener \(H(s)\):</b> transformando la ecuación de la realimentación, \(sW+3W=4Y\):</p>
+\[H(s)=\frac{W}{Y}=\boxed{\frac{4}{s+3}}\]
+<p><b>3. Cerrar el lazo.</b> Con \(R\) y \(G\) en cascada y realimentación negativa:</p>
+\[RG=\frac{2}{s(s+0{,}5)}\cdot\frac{3}{s+3}=\frac{6}{s(s+0{,}5)(s+3)}\]
+\[T(s)=\frac{RG}{1+RGH}=\frac{6(s+3)}{s(s+0{,}5)(s+3)^2+24}=\frac{6s+18}{s^4+6{,}5s^3+12s^2+4{,}5s+24}\]
+<p><b>4. Ecuación diferencial:</b></p>
+\[\frac{d^4y}{dt^4}+6{,}5\frac{d^3y}{dt^3}+12\frac{d^2y}{dt^2}+4{,}5\frac{dy}{dt}+24y=6\frac{du}{dt}+18u\]
+<div class="box trap"><h4>Comprobación que conviene hacer siempre</h4><p>Los polos del lazo cerrado son \(-3{,}52\pm1{,}30j\) y \(+0{,}27\pm1{,}28j\): hay un par con <b>parte real positiva</b>, así que este lazo es <b>inestable</b>. Que el resultado «salga» no significa que el sistema funcione: siempre conviene mirar dónde han quedado los polos.</p></div></div></details></div>
+<h3 id="t4-auto">Autoevaluación</h3>
+<p class="muted">Responde antes de desplegar.</p><details class="paso"><summary><span class="pn">1</span>¿Cómo se construye un diagrama de bloques a partir de ecuaciones?</summary><div class="inner"><p>Despejando en cada ecuación la variable que produce y dibujando su bloque; las restas son los comparadores y las señales comunes, bifurcaciones.</p></div></details><details class="paso"><summary><span class="pn">2</span>¿Cuál es la fórmula de realimentación?</summary><div class="inner"><p>\(G/(1+GH)\) con realimentación <b>negativa</b> y \(G/(1-GH)\) con positiva: el signo del denominador es el contrario al del comparador.</p></div></details><details class="paso"><summary><span class="pn">3</span>¿Qué hay que hacer al mover un sumador hacia delante de un bloque G?</summary><div class="inner"><p>Multiplicar la rama que se suma por <b>G</b>, para que la señal equivalente siga siendo la misma.</p></div></details><details class="paso"><summary><span class="pn">4</span>¿Cómo se trata un sistema con referencia y perturbación?</summary><div class="inner"><p>Por <b>superposición</b>: se calcula la transferencia desde cada entrada anulando la otra, y al final se suman las dos contribuciones.</p></div></details><details class="paso"><summary><span class="pn">5</span>¿Cuándo conviene la fórmula de Mason?</summary><div class="inner"><p>Cuando hay <b>lazos entrelazados</b> que no se pueden separar moviendo bloques: ahí simplificar a mano se vuelve muy propenso a errores.</p></div></details><details class="paso"><summary><span class="pn">6</span>¿Cómo se pasa de función de transferencia a ecuación diferencial?</summary><div class="inner"><p>Multiplicando en cruz y sustituyendo cada potencia de \(s\) por la derivada del mismo orden, respetando también las del numerador, que afectan a la entrada.</p></div></details>
+</section>
+<nav class="pager" aria-label="Páginas"><a href="tema-03.html"><small>← Anterior</small>T3 · Modelado de sistemas físicos y linealización</a><a class="nx" href="tema-05.html"><small>Siguiente →</small>T5 · Análisis temporal: primer y segundo orden</a></nav>
+<p class="inicio" style="margin:36px 0 8px;text-align:center;font-size:13px;color:var(--muted)">Guía no oficial de Regulación Automática (UPCT, GIEyA) · Datos tomados del curso <time datetime="2022-09">2022/23</time> (transparencias, formulario oficial, prácticas, seminarios y exámenes de 2012 a 2022) · página creada en noviembre de 2026</p>
+</main>
+</div>
+<script src="app.js"></script>
+<script src="sims.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>T2 Señales y transformada de Laplace · Regulación Automática · Guía para aprobar</title>
+<meta name="description" content="Regulación Automática (UPCT, GIEyA): tema 2, Señales y transformada de Laplace">
+<meta name="theme-color" content="#3c4fa8">
+<link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<link rel="stylesheet" href="style.css">
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="hub-bar" style="max-width:1180px;margin:0 auto;padding:10px 16px 0"><a href="https://helionacon-ui.github.io/GIEIA-UPCT/" style="display:inline-flex;align-items:center;gap:6px;font:600 13.5px/1 system-ui,sans-serif;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);text-decoration:none">← Todas las guías GIEyA</a><p class="fecha" style="margin:6px 0 0;max-width:none;font:13px/1.45 system-ui,sans-serif;color:var(--muted)">Datos tomados del curso <time datetime="2022-09">2022/23</time> (transparencias de los temas, formulario oficial, guía docente, prácticas y el 1.er parcial resuelto de 2022/23) · página creada en noviembre de 2026</p></div>
+<div class="crumb"><a href="index.html">Regulación Automática</a><span class="sep">›</span><span>Modelado de sistemas</span><span class="sep">›</span><span>T2 · Señales y transformada de Laplace</span></div><a href="#top" class="totop" id="totop" aria-label="Volver arriba">↑</a>
+<div class="wrap" id="top">
+<nav aria-label="Índice" class="toc"><a href="index.html" style="--tc:var(--c0)">Portada</a><div class="grp">Empezar</div><a href="index.html#cero" style="--tc:var(--c0)">Empieza aquí desde cero</a><a href="plan.html" style="--tc:var(--c0)">Cómo es la evaluación</a><a href="index.html#progreso" style="--tc:var(--c0)">Tu progreso</a><div class="grp">Modelado de sistemas</div><a href="tema-01.html" style="--tc:var(--c2)">T1 Qué es controlar un sistema</a><a href="tema-02.html" style="--tc:var(--c3)" class="on" aria-current="page">T2 Señales y transformada de Laplace</a><a href="tema-03.html" style="--tc:var(--c4)">T3 Modelado de sistemas físicos y linealización</a><a href="tema-04.html" style="--tc:var(--c5)">T4 Diagramas de bloques y función de transferencia</a><div class="grp">Análisis y diseño</div><a href="tema-05.html" style="--tc:var(--c6)">T5 Análisis temporal: primer y segundo orden</a><a href="tema-06.html" style="--tc:var(--c7)">T6 Sistemas realimentados: errores y sensibilidad</a><a href="tema-07.html" style="--tc:var(--c8)">T7 Estabilidad y criterio de Routh-Hurwitz</a><a href="tema-08.html" style="--tc:var(--c1)">T8 El lugar de las raíces</a><a href="tema-09.html" style="--tc:var(--c2)">T9 Diseño de compensadores de adelanto y atraso</a><div class="grp">Practicar</div><a href="cuestiones.html" style="--tc:var(--c8)">Cuestiones de teoría respondidas</a><a href="examenes.html" style="--tc:var(--c8)">Problemas de examen resueltos</a><a href="problemas.html" style="--tc:var(--c8)">Qué cae en cada parcial</a><a href="laboratorio.html" style="--tc:var(--c7)">Prácticas y MATLAB</a><a href="formulario.html" style="--tc:var(--c8)">Formulario</a></nav>
+<main>
+<section class="sec tema" style="--tc:var(--c3);--tcs:var(--c3s)">
+<div class="sh"><span aria-hidden="true" class="badge">2</span><div class="shx"><p class="kick">Modelado de sistemas · Tema 2</p><h2 id="t2">Señales y transformada de Laplace</h2><div class="tags"><span class="tag">Modelado de sistemas</span><span class="tag">1.er parcial</span></div></div></div>
+<div class="zero"><p class="ft">Desde cero</p><p><b>Objetivo:</b> pasar del dominio del tiempo al de \(s\) y volver, manejar las propiedades que realmente se usan y aplicar los teoremas del valor inicial y final.</p><ul>
+<li>La transformada de Laplace convierte <b>ecuaciones diferenciales en ecuaciones algebraicas</b>: ésa es toda su utilidad aquí.</li>
+<li>La variable \(s=\sigma+j\omega\) es compleja. La parte real controla el <b>crecimiento o decaimiento</b> y la imaginaria la <b>oscilación</b>.</li>
+<li>Con <b>condiciones iniciales nulas</b> (lo habitual en control), derivar es multiplicar por \(s\) e integrar es dividir por \(s\).</li>
+<li>La <b>antitransformada</b> se hace casi siempre por <b>fracciones simples</b>: se descompone, se identifica cada término en la tabla y se suma.</li>
+<li>Cada <b>polo</b> aporta un término a la respuesta: real negativo da exponencial decreciente, par complejo da oscilación amortiguada, polo en el origen da una rampa o un valor constante.</li>
+<li>Los teoremas del <b>valor inicial y final</b> permiten conocer el principio y el final de la respuesta <b>sin antitransformar</b>. El del valor final sólo vale si el sistema es estable.</li>
+</ul></div>
+<details class="nom"><summary><span aria-hidden="true" class="nom-ic">Aa</span>Nomenclatura del tema 2 <span class="src">8 entradas</span></summary><div class="inner">
+<div class="tw"><table><tr><th>Símbolo</th><th>Significado</th><th>Unidad · nota</th></tr><tr><td class="sym">s</td><td>variable de Laplace</td><td class="u">σ + jω</td></tr><tr><td class="sym">F(s)</td><td>transformada de f(t)</td><td class="u"></td></tr><tr><td class="sym">δ(t)</td><td>impulso unitario</td><td class="u">→ 1</td></tr><tr><td class="sym">u(t)</td><td>escalón unitario</td><td class="u">→ 1/s</td></tr><tr><td class="sym">polo</td><td>raíz del denominador</td><td class="u"></td></tr><tr><td class="sym">cero</td><td>raíz del numerador</td><td class="u"></td></tr><tr><td class="sym">e^(−sT)</td><td>retardo puro</td><td class="u">T segundos</td></tr><tr><td class="sym">valor final</td><td>lim s·F(s) cuando s→0</td><td class="u">sólo si es estable</td></tr></table></div></div></details>
+<figure class="fig"><p class="ft">Figura interactiva - polos, plano s y forma de la respuesta</p><div data-sim="laplace"></div><figcaption>Mueve los controles y observa cómo cambia el resultado: es el mismo cálculo que hay que saber hacer a mano en el examen.</figcaption></figure>
+<h3 id="t2-formulas">Fórmulas que hay que saber usar</h3>
+<div class="box key"><ul>
+<li><b>Definición:</b> \(F(s)=\displaystyle\int_0^\infty f(t)e^{-st}dt\).</li>
+<li><b>Pares básicos:</b> \(\delta(t)\to1\) · \(u(t)\to\dfrac1s\) · \(t\to\dfrac1{s^2}\) · \(e^{-at}\to\dfrac1{s+a}\) · \(\sin\omega t\to\dfrac{\omega}{s^2+\omega^2}\) · \(\cos\omega t\to\dfrac{s}{s^2+\omega^2}\) · \(e^{-at}\sin\omega t\to\dfrac{\omega}{(s+a)^2+\omega^2}\).</li>
+<li><b>Derivada:</b> \(\mathcal L\{\dot f\}=sF(s)-f(0)\) · \(\mathcal L\{\ddot f\}=s^2F(s)-sf(0)-\dot f(0)\).</li>
+<li><b>Integral:</b> \(\mathcal L\left\{\int_0^tf\right\}=\dfrac{F(s)}{s}\).</li>
+<li><b>Desplazamiento temporal:</b> \(\mathcal L\{f(t-T)\}=e^{-sT}F(s)\) — el retardo puro.</li>
+<li><b>Desplazamiento en \(s\):</b> \(\mathcal L\{e^{-at}f(t)\}=F(s+a)\).</li>
+<li><b>Valor final:</b> \(\displaystyle\lim_{t\to\infty}f(t)=\lim_{s\to0}sF(s)\) <b>si el sistema es estable</b>.</li>
+<li><b>Valor inicial:</b> \(f(0^+)=\displaystyle\lim_{s\to\infty}sF(s)\).</li>
+<li><b>Fracciones simples con polo simple:</b> \(A_i=\left[(s-p_i)F(s)\right]_{s=p_i}\).</li>
+</ul></div>
+<h3 id="t2-metodo">Método paso a paso</h3>
+<ol class="steps"><li>Escribe la ecuación diferencial y transforma término a término, con <b>condiciones iniciales nulas</b> si el enunciado lo dice.</li>
+<li>Despeja la variable de interés: queda un cociente de polinomios.</li>
+<li>Factoriza el denominador para localizar los <b>polos</b>.</li>
+<li>Descompón en <b>fracciones simples</b>, con un término por polo (y varios si hay polos repetidos).</li>
+<li>Identifica cada término en la tabla y suma: ésa es \(f(t)\).</li>
+<li>Comprueba con el <b>teorema del valor final</b> y, si puedes, con el del valor inicial.</li></ol>
+<div class="box trap"><h4>Trampas típicas</h4><ul>
+<li>Aplicar el <b>teorema del valor final</b> a un sistema inestable o con polos en el eje imaginario: da un número que no significa nada.</li>
+<li>Olvidar las condiciones iniciales cuando el enunciado <b>no</b> las anula.</li>
+<li>En polos complejos, intentar separar en dos fracciones con números complejos en vez de dejar el término cuadrático completo y ajustarlo a la forma de seno o coseno amortiguados.</li>
+<li>Confundir \(\dfrac{\omega}{s^2+\omega^2}\) (seno) con \(\dfrac{s}{s^2+\omega^2}\) (coseno).</li>
+<li>No multiplicar por \(s\) al aplicar los teoremas de valor inicial o final.</li>
+</ul></div>
+<h3 id="t2-problema">Problema resuelto</h3>
+<div class="prob"><div class="enun"><p class="et">Enunciado</p><p>Un sistema responde a la ecuación \(\ddot y+5\dot y+6y=6u\), con condiciones iniciales nulas. a) Halla la función de transferencia. b) Calcula la respuesta al escalón unitario. c) Comprueba el valor final.</p></div>
+<details class="paso"><summary><span class="pn">✓</span>Ver solución paso a paso</summary><div class="inner"><p><b>a) Función de transferencia.</b> Transformando con condiciones iniciales nulas:</p>
+\[s^2Y+5sY+6Y=6U\ \Rightarrow\ G(s)=\frac{Y}{U}=\frac{6}{s^2+5s+6}=\frac{6}{(s+2)(s+3)}\]
+<p><b>b) Respuesta al escalón.</b> Con \(U(s)=1/s\):</p>
+\[Y(s)=\frac{6}{s(s+2)(s+3)}=\frac{A}{s}+\frac{B}{s+2}+\frac{C}{s+3}\]
+\[A=\left.\frac{6}{(s+2)(s+3)}\right|_{s=0}=1;\quad B=\left.\frac{6}{s(s+3)}\right|_{s=-2}=-3;\quad C=\left.\frac{6}{s(s+2)}\right|_{s=-3}=2\]
+\[\boxed{y(t)=1-3e^{-2t}+2e^{-3t}}\]
+<p><b>c) Comprobaciones.</b></p>
+\[y(\infty)=\lim_{s\to0}sY(s)=\lim_{s\to0}\frac{6}{(s+2)(s+3)}=1\ \checkmark\]
+\[y(0^+)=\lim_{s\to\infty}sY(s)=\lim_{s\to\infty}\frac{6}{(s+2)(s+3)}=0\ \checkmark\]
+<p>Y en \(t=0\): \(1-3+2=0\) ✓. Además \(\dot y(0)=6-6=0\), coherente con un sistema de orden relativo 2.</p>
+<div class="box key"><p><b>Lectura de los polos:</b> \(-2\) y \(-3\) dan dos exponenciales con constantes de tiempo 0,5 y 0,33 s. El <b>polo dominante</b> es el más lento, \(-2\), así que el sistema se comporta aproximadamente como uno de primer orden con \(T=0{,}5\) s y se estabiliza en unos \(3T=1{,}5\) s.</p></div></div></details></div>
+<h3 id="t2-auto">Autoevaluación</h3>
+<p class="muted">Responde antes de desplegar.</p><details class="paso"><summary><span class="pn">1</span>¿Para qué sirve la transformada de Laplace en control?</summary><div class="inner"><p>Para convertir <b>ecuaciones diferenciales en algebraicas</b> y poder trabajar con funciones de transferencia, productos de bloques y lazos.</p></div></details><details class="paso"><summary><span class="pn">2</span>¿Qué significa físicamente la posición de un polo?</summary><div class="inner"><p>La parte <b>real</b> da el decaimiento (negativa = estable) y la parte <b>imaginaria</b> la frecuencia de oscilación.</p></div></details><details class="paso"><summary><span class="pn">3</span>¿Cuándo no vale el teorema del valor final?</summary><div class="inner"><p>Cuando el sistema es <b>inestable</b> o tiene polos sobre el eje imaginario: el límite existe matemáticamente pero no corresponde a ningún valor real.</p></div></details><details class="paso"><summary><span class="pn">4</span>¿Cómo se antitransforma con polos complejos?</summary><div class="inner"><p>Dejando el término cuadrático completo y ajustándolo a \(\dfrac{\omega}{(s+a)^2+\omega^2}\) o \(\dfrac{s+a}{(s+a)^2+\omega^2}\), que dan seno y coseno amortiguados.</p></div></details><details class="paso"><summary><span class="pn">5</span>¿Qué representa \(e^{-sT}\) en una función de transferencia?</summary><div class="inner"><p>Un <b>retardo puro</b> de \(T\) segundos. No es racional, así que suele aproximarse (por ejemplo con Padé) para poder analizarlo con las herramientas clásicas.</p></div></details><details class="paso"><summary><span class="pn">6</span>¿Qué es un polo dominante?</summary><div class="inner"><p>El polo (o par de polos) <b>más cercano al eje imaginario</b>: su término es el más lento y domina la respuesta cuando los demás están al menos cinco veces más lejos.</p></div></details>
+</section>
+<nav class="pager" aria-label="Páginas"><a href="tema-01.html"><small>← Anterior</small>T1 · Qué es controlar un sistema</a><a class="nx" href="tema-03.html"><small>Siguiente →</small>T3 · Modelado de sistemas físicos y linealización</a></nav>
+<p class="inicio" style="margin:36px 0 8px;text-align:center;font-size:13px;color:var(--muted)">Guía no oficial de Regulación Automática (UPCT, GIEyA) · Datos tomados del curso <time datetime="2022-09">2022/23</time> (transparencias, formulario oficial, prácticas, seminarios y exámenes de 2012 a 2022) · página creada en noviembre de 2026</p>
+</main>
+</div>
+<script src="app.js"></script>
+<script src="sims.js"></script>
+</body>
+</html>

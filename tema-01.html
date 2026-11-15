@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>T1 Qué es controlar un sistema · Regulación Automática · Guía para aprobar</title>
+<meta name="description" content="Regulación Automática (UPCT, GIEyA): tema 1, Qué es controlar un sistema">
+<meta name="theme-color" content="#3c4fa8">
+<link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<link rel="stylesheet" href="style.css">
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="hub-bar" style="max-width:1180px;margin:0 auto;padding:10px 16px 0"><a href="https://helionacon-ui.github.io/GIEIA-UPCT/" style="display:inline-flex;align-items:center;gap:6px;font:600 13.5px/1 system-ui,sans-serif;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);text-decoration:none">← Todas las guías GIEyA</a><p class="fecha" style="margin:6px 0 0;max-width:none;font:13px/1.45 system-ui,sans-serif;color:var(--muted)">Datos tomados del curso <time datetime="2022-09">2022/23</time> (transparencias de los temas, formulario oficial, guía docente, prácticas y el 1.er parcial resuelto de 2022/23) · página creada en noviembre de 2026</p></div>
+<div class="crumb"><a href="index.html">Regulación Automática</a><span class="sep">›</span><span>Modelado de sistemas</span><span class="sep">›</span><span>T1 · Qué es controlar un sistema</span></div><a href="#top" class="totop" id="totop" aria-label="Volver arriba">↑</a>
+<div class="wrap" id="top">
+<nav aria-label="Índice" class="toc"><a href="index.html" style="--tc:var(--c0)">Portada</a><div class="grp">Empezar</div><a href="index.html#cero" style="--tc:var(--c0)">Empieza aquí desde cero</a><a href="plan.html" style="--tc:var(--c0)">Cómo es la evaluación</a><a href="index.html#progreso" style="--tc:var(--c0)">Tu progreso</a><div class="grp">Modelado de sistemas</div><a href="tema-01.html" style="--tc:var(--c2)" class="on" aria-current="page">T1 Qué es controlar un sistema</a><a href="tema-02.html" style="--tc:var(--c3)">T2 Señales y transformada de Laplace</a><a href="tema-03.html" style="--tc:var(--c4)">T3 Modelado de sistemas físicos y linealización</a><a href="tema-04.html" style="--tc:var(--c5)">T4 Diagramas de bloques y función de transferencia</a><div class="grp">Análisis y diseño</div><a href="tema-05.html" style="--tc:var(--c6)">T5 Análisis temporal: primer y segundo orden</a><a href="tema-06.html" style="--tc:var(--c7)">T6 Sistemas realimentados: errores y sensibilidad</a><a href="tema-07.html" style="--tc:var(--c8)">T7 Estabilidad y criterio de Routh-Hurwitz</a><a href="tema-08.html" style="--tc:var(--c1)">T8 El lugar de las raíces</a><a href="tema-09.html" style="--tc:var(--c2)">T9 Diseño de compensadores de adelanto y atraso</a><div class="grp">Practicar</div><a href="cuestiones.html" style="--tc:var(--c8)">Cuestiones de teoría respondidas</a><a href="examenes.html" style="--tc:var(--c8)">Problemas de examen resueltos</a><a href="problemas.html" style="--tc:var(--c8)">Qué cae en cada parcial</a><a href="laboratorio.html" style="--tc:var(--c7)">Prácticas y MATLAB</a><a href="formulario.html" style="--tc:var(--c8)">Formulario</a></nav>
+<main>
+<section class="sec tema" style="--tc:var(--c2);--tcs:var(--c2s)">
+<div class="sh"><span aria-hidden="true" class="badge">1</span><div class="shx"><p class="kick">Modelado de sistemas · Tema 1</p><h2 id="t1">Qué es controlar un sistema</h2><div class="tags"><span class="tag">Modelado de sistemas</span><span class="tag">1.er parcial</span></div></div></div>
+<div class="zero"><p class="ft">Desde cero</p><p><b>Objetivo:</b> distinguir lazo abierto y lazo cerrado, identificar los elementos de un sistema de control y entender qué aporta realimentar.</p><ul>
+<li>Un <b>sistema</b> es cualquier conjunto que transforma unas entradas en unas salidas. <b>Controlar</b> es actuar sobre las entradas para que la salida haga lo que queremos.</li>
+<li>En <b>lazo abierto</b> la acción se calcula sin mirar el resultado: funciona si el modelo es exacto y no hay perturbaciones. Es el horno con temporizador.</li>
+<li>En <b>lazo cerrado</b> se mide la salida, se compara con la referencia y se actúa sobre el <b>error</b>. Es el termostato.</li>
+<li>Realimentar aporta tres cosas: <b>reduce el error</b>, <b>rechaza perturbaciones</b> y <b>disminuye la sensibilidad</b> a las variaciones de la planta. A cambio, puede volver <b>inestable</b> un sistema que era estable.</li>
+<li>Los elementos típicos: <b>referencia</b>, <b>comparador</b>, <b>regulador</b>, <b>actuador</b>, <b>planta</b>, <b>sensor</b> y la <b>realimentación</b>; más las <b>perturbaciones</b>, que entran donde no queremos.</li>
+<li>Toda la teoría clásica trabaja con sistemas <b>lineales e invariantes en el tiempo</b> (LTI): por eso los temas siguientes van de modelar y, cuando hace falta, <b>linealizar</b>.</li>
+</ul></div>
+<details class="nom"><summary><span aria-hidden="true" class="nom-ic">Aa</span>Nomenclatura del tema 1 <span class="src">8 entradas</span></summary><div class="inner">
+<div class="tw"><table><tr><th>Símbolo</th><th>Significado</th><th>Unidad · nota</th></tr><tr><td class="sym">u(t)</td><td>entrada o referencia</td><td class="u"></td></tr><tr><td class="sym">y(t)</td><td>salida o variable controlada</td><td class="u"></td></tr><tr><td class="sym">e(t)</td><td>error</td><td class="u">u − y</td></tr><tr><td class="sym">d(t)</td><td>perturbación</td><td class="u"></td></tr><tr><td class="sym">G(s)</td><td>planta</td><td class="u"></td></tr><tr><td class="sym">H(s)</td><td>realimentación o sensor</td><td class="u"></td></tr><tr><td class="sym">L = GH</td><td>ganancia de lazo</td><td class="u"></td></tr><tr><td class="sym">S</td><td>sensibilidad</td><td class="u">1/(1+GH)</td></tr></table></div></div></details>
+<figure class="fig"><p class="ft">Figura interactiva - lazo abierto frente a lazo cerrado</p><div data-sim="lazo"></div><figcaption>Mueve los controles y observa cómo cambia el resultado: es el mismo cálculo que hay que saber hacer a mano en el examen.</figcaption></figure>
+<h3 id="t1-formulas">Fórmulas que hay que saber usar</h3>
+<div class="box key"><ul>
+<li><b>Lazo abierto:</b> \(Y(s)=G(s)U(s)\). El error depende por completo de lo bien que se conozca \(G\).</li>
+<li><b>Lazo cerrado con realimentación \(H\):</b> \(\dfrac{Y(s)}{U(s)}=\dfrac{G(s)}{1+G(s)H(s)}\).</li>
+<li><b>Realimentación unitaria:</b> \(\dfrac{Y}{U}=\dfrac{G}{1+G}\) y \(\dfrac{E}{U}=\dfrac{1}{1+G}\).</li>
+<li><b>Rechazo de una perturbación</b> \(D\) que entra a la salida de la planta: \(\dfrac{Y}{D}=\dfrac{1}{1+GH}\): cuanto mayor es la ganancia de lazo, menos se nota.</li>
+<li><b>Sensibilidad:</b> \(S=\dfrac{\partial T/T}{\partial G/G}=\dfrac{1}{1+GH}\). Un cambio del 10 % en la planta con \(GH=99\) se traduce en un 0,1 % en la salida.</li>
+<li><b>Ecuación característica:</b> \(1+G(s)H(s)=0\). Sus raíces son los <b>polos en lazo cerrado</b>, y de ellas depende todo lo demás.</li>
+</ul></div>
+<h3 id="t1-metodo">Método paso a paso</h3>
+<ol class="steps"><li>Identifica <b>qué se quiere controlar</b> (la variable controlada) y <b>con qué</b> (la variable manipulada).</li>
+<li>Dibuja el <b>diagrama de bloques</b> con sus elementos: referencia, comparador, regulador, actuador, planta y sensor.</li>
+<li>Marca dónde entran las <b>perturbaciones</b>.</li>
+<li>Escribe la función de transferencia de cada bloque y cierra el lazo con la fórmula de realimentación.</li>
+<li>Comprueba la <b>ecuación característica</b>: es lo que decide la estabilidad y la forma de la respuesta.</li></ol>
+<div class="box trap"><h4>Trampas típicas</h4><ul>
+<li>Confundir <b>realimentación</b> con <b>retroalimentación positiva</b>: en control, el comparador <b>resta</b> salvo que se indique lo contrario.</li>
+<li>Pensar que más ganancia es siempre mejor: reduce el error, pero acerca los polos a la inestabilidad.</li>
+<li>Olvidar el <b>sensor</b> en el lazo: su dinámica forma parte de \(H(s)\) y puede desestabilizar.</li>
+<li>Suponer que el lazo abierto no sirve: en sistemas muy repetitivos y sin perturbaciones, es más barato y nunca se inestabiliza.</li>
+<li>Escribir \(G/(1-GH)\) cuando la realimentación es negativa.</li>
+</ul></div>
+<h3 id="t1-problema">Problema resuelto</h3>
+<div class="prob"><div class="enun"><p class="et">Enunciado</p><p>Un horno tiene función de transferencia \(G(s)=\dfrac{2}{10s+1}\) (en °C/V). Se controla con un regulador proporcional de ganancia \(K_p\) y realimentación unitaria. a) Calcula la ganancia estática en lazo abierto y en lazo cerrado con \(K_p=20\). b) Calcula el error permanente ante un escalón de referencia. c) Si la ganancia real de la planta cambia un 20 %, ¿cuánto cambia la salida en cada caso?</p></div>
+<details class="paso"><summary><span class="pn">✓</span>Ver solución paso a paso</summary><div class="inner"><p><b>a) Ganancias estáticas.</b> En lazo abierto, \(G(0)=2\): 1 V da 2 °C. En lazo cerrado:</p>
+\[T(s)=\frac{K_pG}{1+K_pG}=\frac{40/(10s+1)}{1+40/(10s+1)}=\frac{40}{10s+41}\ \Rightarrow\ T(0)=\frac{40}{41}=0{,}976\]
+<p>La constante de tiempo pasa de 10 s a \(10/41=0{,}244\) s: el lazo <b>acelera</b> el sistema 41 veces.</p>
+<p><b>b) Error permanente ante escalón unitario:</b></p>
+\[e_{rp}=\frac{1}{1+K_pG(0)}=\frac{1}{1+40}=\mathbf{2{,}4\ \%}\]
+<p><b>c) Sensibilidad.</b> Si la ganancia de la planta sube un 20 % (de 2 a 2,4):</p>
+<div class="tw"><table><tr><th></th><th>Antes</th><th>Después</th><th>Variación</th></tr>
+<tr><td>Lazo abierto</td><td>2,00</td><td>2,40</td><td><b>+20 %</b></td></tr>
+<tr><td>Lazo cerrado</td><td>0,976</td><td>48/49 = 0,980</td><td><b>+0,4 %</b></td></tr></table></div>
+<p>La sensibilidad teórica confirma el resultado:</p>
+\[S=\frac{1}{1+K_pG(0)}=\frac1{41}=0{,}024\ \Rightarrow\ 20\ \%\cdot0{,}024=0{,}49\ \%\]
+<div class="box key"><p><b>Lo que hay que llevarse:</b> realimentar con ganancia alta reduce el error, acelera la respuesta y hace al sistema casi insensible a la planta. El precio aparece con plantas de orden mayor: ahí la ganancia alta produce oscilación y, al final, inestabilidad.</p></div></div></details></div>
+<h3 id="t1-auto">Autoevaluación</h3>
+<p class="muted">Responde antes de desplegar.</p><details class="paso"><summary><span class="pn">1</span>¿Qué diferencia hay entre lazo abierto y lazo cerrado?</summary><div class="inner"><p>En <b>lazo abierto</b> la acción se calcula sin medir la salida; en <b>lazo cerrado</b> se mide, se compara con la referencia y se actúa sobre el error.</p></div></details><details class="paso"><summary><span class="pn">2</span>¿Qué tres ventajas aporta realimentar?</summary><div class="inner"><p>Reduce el <b>error</b>, <b>rechaza perturbaciones</b> y disminuye la <b>sensibilidad</b> frente a variaciones de la planta. Todas por el mismo factor, \(1/(1+GH)\).</p></div></details><details class="paso"><summary><span class="pn">3</span>¿Cuál es el precio de realimentar?</summary><div class="inner"><p>Que puede volver <b>inestable</b> un sistema estable, además de necesitar un sensor y amplificar su ruido.</p></div></details><details class="paso"><summary><span class="pn">4</span>¿Qué es la ecuación característica?</summary><div class="inner"><p>\(1+G(s)H(s)=0\). Sus raíces son los polos en lazo cerrado, que determinan la estabilidad y la forma de la respuesta.</p></div></details><details class="paso"><summary><span class="pn">5</span>¿Por qué la teoría clásica exige sistemas LTI?</summary><div class="inner"><p>Porque sólo con <b>linealidad e invariancia</b> vale la transformada de Laplace y el concepto de función de transferencia, que es la herramienta sobre la que se construye todo.</p></div></details><details class="paso"><summary><span class="pn">6</span>¿Cuándo tiene sentido el lazo abierto?</summary><div class="inner"><p>Cuando el proceso es muy repetible, las perturbaciones son pequeñas y el modelo es bueno: sale más barato y nunca se desestabiliza.</p></div></details>
+</section>
+<nav class="pager" aria-label="Páginas"><a href="plan.html"><small>← Anterior</small>Cómo es la evaluación</a><a class="nx" href="tema-02.html"><small>Siguiente →</small>T2 · Señales y transformada de Laplace</a></nav>
+<p class="inicio" style="margin:36px 0 8px;text-align:center;font-size:13px;color:var(--muted)">Guía no oficial de Regulación Automática (UPCT, GIEyA) · Datos tomados del curso <time datetime="2022-09">2022/23</time> (transparencias, formulario oficial, prácticas, seminarios y exámenes de 2012 a 2022) · página creada en noviembre de 2026</p>
+</main>
+</div>
+<script src="app.js"></script>
+<script src="sims.js"></script>
+</body>
+</html>
