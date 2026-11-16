@@ -17,24 +17,64 @@
 <style id="lectura">
 @media screen{
 :root{--body:"Atkinson Hyperlegible Next","Atkinson Hyperlegible","Segoe UI",system-ui,-apple-system,sans-serif}
-body{font-family:var(--body);font-size:20.5px;line-height:2.1;letter-spacing:.022em;word-spacing:.09em}
-p{margin:0 0 1.75em}
-li{margin:.8em 0}
-p,li{max-width:62ch}
+body{font-family:var(--body);font-size:20px;line-height:1.95;letter-spacing:.014em;word-spacing:.05em}
+p{margin:0 0 1.5em;max-width:64ch;hyphens:auto;-webkit-hyphens:auto}
+li{margin:.72em 0;max-width:64ch}
 .box p:last-child,.box ul:last-child,.box ol:last-child{margin-bottom:0}
-h2{margin-top:92px;margin-bottom:24px;line-height:1.3}
-h3{font-size:24px;margin:58px 0 18px;line-height:1.35}
-h4{margin-top:34px;margin-bottom:10px}
-.box{padding:24px 30px;margin:32px 0}
-table{font-size:18px;line-height:1.75}
-td,th{padding-top:.85em;padding-bottom:.85em}
-figure.fig figcaption{font-size:17px;line-height:1.8;margin-top:12px}
+h2{margin-top:92px;margin-bottom:22px;line-height:1.25}
+h3{font-size:25px;margin:66px 0 20px;line-height:1.3}
+h4{margin:38px 0 12px;line-height:1.4}
+/* ---- entradilla con capitular ---- */
+.zero .lede{font-size:1.05em;line-height:1.86;text-align:left}
+.zero .lede::first-letter{float:left;font-size:3.05em;line-height:.84;font-weight:700;padding:.06em .14em 0 0;color:var(--tc,var(--accent))}
+/* ---- sumario del tema ---- */
+p.obj{max-width:none;text-align:left;margin:0 0 1.7em;padding:14px 20px;border-radius:10px;
+ background:color-mix(in srgb,var(--surface) 62%,transparent);
+ border-left:3px solid var(--tc,var(--accent));font-size:.95em;line-height:1.75}
+p.obj>b:first-child{display:block;font:700 11.5px/1.7 var(--mono,monospace);letter-spacing:.1em;
+ text-transform:uppercase;color:var(--tc,var(--accent))}
+/* ---- términos con entrada, al modo de un manual ---- */
+p.run{margin:0 0 1.38em}
+p.run>b:first-child{display:block;font:700 12px/1.7 var(--mono,monospace);letter-spacing:.09em;
+ text-transform:uppercase;color:var(--tc,var(--accent))}
+/* ---- rótulos internos ---- */
+.zero>.ft{font:700 11.5px/1.6 var(--mono,monospace);letter-spacing:.1em;text-transform:uppercase}
+.zero>.ft:not(:first-child){margin-top:2em;font-size:12.5px;color:var(--fg);opacity:.72}
+/* ---- desarrollo teórico ---- */
+.deep h4{position:relative;padding-left:2.35em;font-size:1.03em}
+.deep h4 .hn{position:absolute;left:0;top:.06em;font:700 .84em/1.7 var(--mono,monospace);
+ color:var(--tc,var(--accent));opacity:.8}
+.deep>h4:not(:first-child){border-top:1px solid var(--line);padding-top:30px;margin-top:42px}
+.eqd{margin:1.65em 0;text-align:center;overflow-x:auto;overflow-y:hidden}
+/* ---- notas al margen, sin duplicar el rótulo ---- */
+.box.deepnote{padding:15px 20px;margin:1.5em 0;border-radius:0 10px 10px 0;
+ background:color-mix(in srgb,var(--surface) 76%,transparent)}
+.box.key.deepnote::before,.box.trap.deepnote::before{content:none}
+.box.deepnote>b:first-child{display:block;font:700 11.5px/1.7 var(--mono,monospace);
+ letter-spacing:.1em;text-transform:uppercase;color:var(--tc,var(--accent))}
+.box.trap.deepnote>b:first-child{color:var(--warn)}
+/* ---- resto ---- */
+.box{padding:22px 28px;margin:30px 0}
+table{font-size:18px;line-height:1.7}
+td,th{padding-top:.8em;padding-bottom:.8em}
+figure.fig figcaption{font-size:17px;line-height:1.78;margin-top:12px}
 figure.fig{margin-block:34px}
-.lede{line-height:1.85}
 .toc a{font-size:15.5px;padding:8px 0 8px 10px}
 svg,svg text,canvas,.katex,mjx-container{letter-spacing:normal;word-spacing:normal}
+mjx-container[display]{margin:0!important}
 details>summary{line-height:1.7;padding-block:.5em}
-@media (max-width:600px){body{font-size:19px;line-height:2}}
+.enun p,.inner p{text-align:left}
+@media (min-width:1040px){
+p,li{text-align:justify}
+.zero .lede,.enun p,.inner p,figcaption,.ft{text-align:left}
+}
+@media (max-width:600px){
+body{font-size:18.5px;line-height:1.9}
+p{text-align:left}
+.zero .lede::first-letter{font-size:2.6em}
+.deep h4{padding-left:0}
+.deep h4 .hn{position:static;margin-right:.5em}
+}
 }
 </style>
 </head>
@@ -46,7 +86,7 @@ details>summary{line-height:1.7;padding-block:.5em}
 <main>
 <section class="sec tema" style="--tc:var(--c8);--tcs:var(--c8s)">
 <div class="sh"><span aria-hidden="true" class="badge">7</span><div class="shx"><p class="kick">Análisis y diseño · Tema 7</p><h2 id="t7">Estabilidad y criterio de Routh-Hurwitz</h2><div class="tags"><span class="tag">Análisis y diseño</span><span class="tag">2.º parcial</span></div></div></div>
-<div class="zero"><p class="ft">Desde cero</p><p><b>Objetivo:</b> determinar si un sistema es estable sin resolver la ecuación característica y hallar el rango de ganancia que mantiene la estabilidad.</p><ul>
+<div class="zero"><p class="ft">Desde cero</p><p class="obj"><b>Objetivo:</b> determinar si un sistema es estable sin resolver la ecuación característica y hallar el rango de ganancia que mantiene la estabilidad.</p><ul>
 <li>Un sistema LTI es <b>estable</b> si todos los polos del lazo cerrado tienen <b>parte real negativa</b>, es decir, si están en el semiplano izquierdo.</li>
 <li>Con polos sobre el eje imaginario el sistema es <b>marginalmente estable</b>: oscila sin amortiguarse. Con alguno a la derecha, <b>inestable</b>.</li>
 <li>Los polos son las raíces de la <b>ecuación característica</b> \(1+G(s)H(s)=0\), que para orden mayor que 3 no se resuelve a mano.</li>
@@ -57,14 +97,14 @@ details>summary{line-height:1.7;padding-block:.5em}
 <!--ill--><div class="ill-wrap"><h3 class="ill-h" style="margin:22px 0 4px">En imágenes</h3><figure class="ill"><div class="ill-t">Estabilidad sin calcular las raíces</div><svg viewBox="0 0 560 262" role="img" aria-label="Tabla de Routh" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,-apple-system,Segoe UI,sans-serif"><rect x="24" y="50" width="170" height="28" rx="6" fill="var(--tc,var(--accent))" stroke="var(--tc,var(--accent))" stroke-width="1.2" opacity="0.06"/><text x="38" y="69" fill="var(--tc,var(--accent))" font-size="13" text-anchor="start" font-weight="700" opacity="1">s³</text><text x="100" y="69" fill="var(--fg)" font-size="13" text-anchor="middle" font-weight="700" opacity="1">1</text><text x="156" y="69" fill="var(--fg)" font-size="13" text-anchor="middle" font-weight="700" opacity="1">3</text><rect x="24" y="84" width="170" height="28" rx="6" fill="var(--tc,var(--accent))" stroke="var(--tc,var(--accent))" stroke-width="1.2" opacity="0.06"/><text x="38" y="103" fill="var(--tc,var(--accent))" font-size="13" text-anchor="start" font-weight="700" opacity="1">s²</text><text x="100" y="103" fill="var(--fg)" font-size="13" text-anchor="middle" font-weight="700" opacity="1">2</text><text x="156" y="103" fill="var(--fg)" font-size="13" text-anchor="middle" font-weight="700" opacity="1">4</text><rect x="24" y="118" width="170" height="28" rx="6" fill="var(--tc,var(--accent))" stroke="var(--tc,var(--accent))" stroke-width="1.2" opacity="0.06"/><text x="38" y="137" fill="var(--tc,var(--accent))" font-size="13" text-anchor="start" font-weight="700" opacity="1">s¹</text><text x="100" y="137" fill="var(--fg)" font-size="13" text-anchor="middle" font-weight="700" opacity="1">1</text><text x="156" y="137" fill="var(--fg)" font-size="13" text-anchor="middle" font-weight="700" opacity="1">0</text><rect x="24" y="152" width="170" height="28" rx="6" fill="var(--tc,var(--accent))" stroke="var(--tc,var(--accent))" stroke-width="1.2" opacity="0.06"/><text x="38" y="171" fill="var(--tc,var(--accent))" font-size="13" text-anchor="start" font-weight="700" opacity="1">s⁰</text><text x="100" y="171" fill="var(--fg)" font-size="13" text-anchor="middle" font-weight="700" opacity="1">4</text><text x="156" y="171" fill="var(--fg)" font-size="13" text-anchor="middle" font-weight="700" opacity="1"></text><text x="24" y="206" fill="var(--fg)" font-size="12.5" text-anchor="start" font-weight="600" opacity="1">P(s) = s³ + 2s² + 3s + 4</text><text x="230" y="56" fill="var(--tc,var(--accent))" font-size="13.5" text-anchor="start" font-weight="700" opacity="1">Estable ⇔ primera</text><text x="230" y="78" fill="var(--tc,var(--accent))" font-size="13.5" text-anchor="start" font-weight="700" opacity="1">columna sin cambios</text><text x="230" y="100" fill="var(--tc,var(--accent))" font-size="13.5" text-anchor="start" font-weight="700" opacity="1">de signo.</text><text x="230" y="133" fill="var(--fg)" font-size="13" text-anchor="start" opacity="1">Cada cambio = un</text><text x="230" y="155" fill="var(--fg)" font-size="13" text-anchor="start" opacity="1">polo en el semiplano</text><text x="230" y="177" fill="var(--fg)" font-size="13" text-anchor="start" opacity="1">derecho.</text></svg><figcaption>El criterio de Routh–Hurwitz cuenta los polos inestables a partir de los cambios de signo de la primera columna de la tabla.</figcaption></figure><figure class="ill"><div class="ill-t">Hasta qué ganancia es estable el lazo</div><svg viewBox="0 0 560 262" role="img" aria-label="Margen de ganancia K" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,-apple-system,Segoe UI,sans-serif"><line x1="36" y1="214" x2="282.8" y2="214" stroke="var(--muted)" stroke-width="1.6" opacity="1" stroke-linecap="round"/><polygon points="290,214 282.7,217.3 282.7,210.7" fill="var(--muted)"/><line x1="36" y1="214" x2="36" y2="37.2" stroke="var(--muted)" stroke-width="1.6" opacity="1" stroke-linecap="round"/><polygon points="36,30 39.3,37.3 32.7,37.3" fill="var(--muted)"/><text x="290" y="230" fill="var(--muted)" font-size="12" text-anchor="end" font-style="italic" opacity="1">K</text><line x1="36" y1="150" x2="290" y2="150" stroke="var(--muted)" stroke-width="1.2" opacity="1" stroke-linecap="round"/><rect x="36" y="150" width="150" height="50" rx="0" fill="var(--tc,var(--accent))" stroke="none" stroke-width="1.5" opacity="0.15"/><rect x="186" y="150" width="100" height="50" rx="0" fill="var(--c6,#2c8a52)" stroke="none" stroke-width="1.5" opacity="0.15"/><text x="110" y="180" fill="var(--tc,var(--accent))" font-size="13" text-anchor="middle" font-weight="700" opacity="1">estable</text><text x="236" y="180" fill="var(--c6,#2c8a52)" font-size="13" text-anchor="middle" font-weight="700" opacity="1">inestable</text><line x1="186" y1="120" x2="186" y2="210" stroke="var(--warn,#b8730c)" stroke-width="2" stroke-dasharray="5 3" opacity="1" stroke-linecap="round"/><text x="186" y="112" fill="var(--warn,#b8730c)" font-size="12" text-anchor="middle" font-weight="700" opacity="1">K_crítica</text><text x="24" y="254" fill="var(--fg)" font-size="11.5" text-anchor="start" font-weight="600" opacity="1">la fila de ceros da la frecuencia de oscilación sostenida</text></svg><figcaption>Imponiendo que la primera columna no cambie de signo se obtiene el rango de ganancias admisible y la ganancia crítica.</figcaption></figure></div><!--/ill--><details class="nom"><summary><span aria-hidden="true" class="nom-ic">Aa</span>Nomenclatura del tema 7 <span class="src">8 entradas</span></summary><div class="inner">
 <div class="tw"><table><tr><th>Símbolo</th><th>Significado</th><th>Unidad · nota</th></tr><tr><td class="sym">ec. característica</td><td>1 + G(s)H(s) = 0</td><td class="u"></td></tr><tr><td class="sym">Routh</td><td>tabla de estabilidad</td><td class="u"></td></tr><tr><td class="sym">cambio de signo</td><td>una raíz en el semiplano derecho</td><td class="u"></td></tr><tr><td class="sym">polinomio auxiliar</td><td>fila anterior a la de ceros</td><td class="u">da ω de oscilación</td></tr><tr><td class="sym">ε</td><td>sustituto de un cero en la 1.ª columna</td><td class="u"></td></tr><tr><td class="sym">Klim</td><td>ganancia límite de estabilidad</td><td class="u"></td></tr><tr><td class="sym">ωosc</td><td>frecuencia en el límite</td><td class="u">rad/s</td></tr><tr><td class="sym">marginal</td><td>polos en el eje imaginario</td><td class="u">oscilación mantenida</td></tr></table></div></div></details>
 <figure class="fig"><p class="ft">Figura interactiva - tabla de Routh y rango de estabilidad</p><div data-sim="routh"></div><figcaption>Mueve los controles y observa cómo cambia el resultado: es el mismo cálculo que hay que saber hacer a mano en el examen.</figcaption></figure>
-<!--amp1--><div class="zero" style="margin-top:14px"><p class="ft">Explicación ampliada</p><p class="ft">Estable significa: ningún polo en el semiplano derecho</p><p>Un sistema lineal es <b>estable</b> si todos los polos de lazo cerrado tienen parte real negativa (la respuesta transitoria muere). Un solo polo con parte real positiva hace crecer la respuesta sin límite. Resolver el polinomio característico de orden alto es incómodo, así que el criterio de <b>Routh–Hurwitz</b> cuenta cuántas raíces tienen \(\operatorname{Re}>0\) <em>sin calcularlas</em>. Condición necesaria previa (y muy rápida): todos los coeficientes del polinomio característico deben existir y tener el mismo signo; si falta alguno o hay cambios de signo, el sistema es inestable (o crítico).</p><p class="ft">Cómo se construye la tabla y los casos especiales</p><p>Se colocan los coeficientes en dos filas alternas (el 1.º, 3.º,… arriba; el 2.º, 4.º,… debajo) y cada fila siguiente se calcula con un determinante: \(b_1=\dfrac{a_{n-1}a_{n-2}-a_na_{n-3}}{a_{n-1}}\), etc. El número de <b>cambios de signo en la primera columna</b> es el número de raíces en el semiplano derecho. Casos especiales: <b>(1)</b> un cero aislado en la primera columna: se sustituye por un \(\epsilon>0\) pequeño y se continúa; <b>(2)</b> una fila entera de ceros: hay raíces simétricas respecto al origen; con la fila anterior se forma el <b>polinomio auxiliar</b>, cuyas raíces son parte de las del sistema (en el eje imaginario: oscilación sostenida), se deriva y se continúa. Muy útil para hallar el rango de ganancia \(K\) que mantiene el lazo estable.</p></div><!--/amp1--><!--deep--><h3 id="t7-profundiza">Desarrollo teórico a fondo</h3><div class="deep">
-<h4>1. Estabilidad</h4>
+<!--amp1--><div class="zero" style="margin-top:14px"><p class="ft">Explicación ampliada</p><p class="ft">Estable significa: ningún polo en el semiplano derecho</p><p class="lede">Un sistema lineal es <b>estable</b> si todos los polos de lazo cerrado tienen parte real negativa (la respuesta transitoria muere). Un solo polo con parte real positiva hace crecer la respuesta sin límite. Resolver el polinomio característico de orden alto es incómodo, así que el criterio de <b>Routh–Hurwitz</b> cuenta cuántas raíces tienen \(\operatorname{Re}>0\) <em>sin calcularlas</em>. Condición necesaria previa (y muy rápida): todos los coeficientes del polinomio característico deben existir y tener el mismo signo; si falta alguno o hay cambios de signo, el sistema es inestable (o crítico).</p><p class="ft">Cómo se construye la tabla y los casos especiales</p><p>Se colocan los coeficientes en dos filas alternas (el 1.º, 3.º,… arriba; el 2.º, 4.º,… debajo) y cada fila siguiente se calcula con un determinante: \(b_1=\dfrac{a_{n-1}a_{n-2}-a_na_{n-3}}{a_{n-1}}\), etc. El número de <b>cambios de signo en la primera columna</b> es el número de raíces en el semiplano derecho. Casos especiales: <b>(1)</b> un cero aislado en la primera columna: se sustituye por un \(\epsilon>0\) pequeño y se continúa; <b>(2)</b> una fila entera de ceros: hay raíces simétricas respecto al origen; con la fila anterior se forma el <b>polinomio auxiliar</b>, cuyas raíces son parte de las del sistema (en el eje imaginario: oscilación sostenida), se deriva y se continúa. Muy útil para hallar el rango de ganancia \(K\) que mantiene el lazo estable.</p></div><!--/amp1--><!--deep--><h3 id="t7-profundiza">Desarrollo teórico a fondo</h3><div class="deep">
+<h4><span class="hn">1</span>Estabilidad</h4>
 <div class="box key deepnote"><b>Idea clave.</b> un sistema lineal es estable si su respuesta libre tiende a cero. Esto ocurre si todos los polos de lazo cerrado están en el semiplano izquierdo del plano \(s\).</div>
 <ul><li>Polos en el semiplano izquierdo: estable.</li><li>Polo en el eje imaginario: estabilidad marginal.</li><li>Polo en el semiplano derecho: inestable.</li></ul>
 <details class="dem"><summary><span class="pn">∴</span>Criterio de Routh-Hurwitz</summary><div class="inner"><p>Permite saber si hay raíces en el semiplano derecho sin calcularlas. Se construye una tabla con los coeficientes del polinomio característico.</p>
 <ol class="pasos"><li>Escribe el polinomio \(a_ns^n+\dots+a_0\). Si falta algún coeficiente o alguno es negativo, es inestable.</li><li>Construye la tabla de Routh con los coeficientes.</li><li>Cuenta los cambios de signo en la primera columna. Cada cambio es una raíz en el semiplano derecho.</li></ol>
 <div class="box trap deepnote"><b>Cuidado.</b> Si aparece un cero en la primera columna, la tabla no se puede continuar: se sustituye por un \(\varepsilon\) positivo muy pequeño y se toma el límite.</div></div></details>
-<h4>2. Margen de estabilidad</h4>
+<h4><span class="hn">2</span>Margen de estabilidad</h4>
 <p>El margen de fase y el de ganancia dicen cuánto falta para la inestabilidad. Se leen en el diagrama de Bode del lazo abierto.</p>
 </div><!--/deep--><h3 id="t7-formulas">Fórmulas que hay que saber usar</h3>
 <div class="box key"><ul>
