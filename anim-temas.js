@@ -83,4 +83,10 @@ M.reg('ra-t9',M.curva({title:'Compensador de adelanto: la fase que añade',H:560
  extra:function(D,A,a){var fm=Math.asin((a-1)/(a+1))*180/Math.PI;D.line(A.X(0),A.Y(0),A.X(0),A.Y(fm),C.hl,1.6,[4,3]);D.dot(A.X(0),A.Y(fm),6,C.hl);},
  read:function(a){return ['C(s) = (1 + αTs)/(1 + Ts)    α = '+nf(a,1),'φ_{máx} = arcsen((α−1)/(α+1)) = '+nf(Math.asin((a-1)/(a+1))*180/Math.PI,1)+'°  en ω = 1/(T√α)'];},
  caps:[[6,'Un compensador de adelanto tiene un cero antes que el polo: en la banda entre ambos añade fase positiva al lazo.'],[12,'El máximo de fase está en la media geométrica de las dos esquinas y vale <i>arcsen((α−1)/(α+1))</i>.'],[99,'Se coloca ese máximo en la nueva frecuencia de cruce para ganar margen de fase. Con α muy grande se gana poco más y se amplifica mucho el ruido.']]}));
+M.reg('ra-t5b',M.curva({title:'Sistema de primer orden: la constante de tiempo',H:560,dur:18,p:[0.5,3],ax:{xr:[0,12],yr:[0,1.15],xt:[2,4,6,8,10,12],yt:[0.632,0.95,1],xd:0,yd:3,xl:'t (s)',yl:'y(t)/K'},h:300,
+ curvas:[{f:function(x,T){return 1-Math.exp(-x/T);},c:'m'}],
+ extra:function(D,A,T){D.line(A.X(0),A.Y(0.632),A.X(T),A.Y(0.632),C.hl,1.2,[4,3]);D.line(A.X(T),A.Y(0),A.X(T),A.Y(0.632),C.hl,1.2,[4,3]);D.text('τ',A.X(T),A.Y(0)+34,{it:true,s:16,a:'center',c:C.hl});D.line(A.X(3*T),A.Y(0),A.X(3*T),A.Y(0.95),C.g,1,[3,4]);D.text('3τ',A.X(3*T),A.Y(0)+34,{s:14,a:'center',c:C.g});
+  D.line(A.X(0),A.Y(0),A.X(T),A.Y(1),C.mut,1.2);},
+ read:function(T){return ['G(s) = K/(τs + 1)    τ = '+nf(T,2)+' s','63,2 % en t = τ    95 % en 3τ = '+nf(3*T,1)+' s'];},
+ caps:[[6,'Un sistema de primer orden responde al escalón sin oscilar: <i>y(t) = K(1 − e<sup>−t/τ</sup>)</i>.'],[12,'En t = τ llega al 63,2 % del valor final, y la tangente en el origen corta el valor final justo en t = τ.'],[99,'Con 3τ alcanza el 95 % y con 4τ el 98 %: por eso τ resume toda la rapidez del sistema.']]}));
 })();
