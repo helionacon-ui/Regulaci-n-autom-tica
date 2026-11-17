@@ -31,21 +31,24 @@ M.reg('ra-t3',M.traza({title:'Linealización: la recta tangente en el punto de t
  caps:[[5,'El caudal de salida de un depósito por un orificio sigue <i>q = k·√h</i>: un modelo no lineal.'],[10,'Alrededor de un punto de trabajo h₀ se sustituye la curva por su tangente: <i>Δq ≈ (dq/dh)<sub>0</sub>·Δh</i>.'],[99,'El modelo lineal solo vale cerca de h₀, y su pendiente (la «ganancia») cambia con el punto de trabajo.']]}));
 
 /* T4 álgebra de bloques */
-M.reg('ra-t4',M.pasos({title:'Álgebra de diagramas de bloques',H:560,dur:20,y0:120,lines:[
- {s:'Serie:  G_{1} → G_{2}   ≡   G_{1}·G_{2}'},
- {s:'Paralelo:  G_{1} ± G_{2}   (suman sus salidas)'},
- {s:'Realimentación negativa:  G / (1 + G·H)'},
- {s:'Ejemplo: G_{1} = 10/(s+1),  G_{2} = 1/s,  H = 0,5'},
- {s:'serie: G = 10 / (s(s+1))'},
- {s:'cerrado: M(s) = 10 / (s² + s + 5)',b:true,c:'m'},
- {s:'polos: s = −0,5 ± j2,18'}]}));
+function bx(D,x,y,w,lab,c,al){if(al<=0.01)return;D.ctx.save();D.ctx.globalAlpha=al;D.rect(x,y-24,w,48,null,C.bg);D.rect(x,y-24,w,48,c,RG(c,.12),2.2);D.ctx.restore();D.text(lab,x+w/2,y+6,{s:16,a:'center',c:c,bold:true,al:al});}
+M.reg('ra-t4',M.base({title:'Álgebra de diagramas de bloques',H:560,dur:20,caps:[[7,'Dos bloques en serie se sustituyen por su producto: G₁·G₂ = 10/(s+1) · 1/s = 10/(s(s+1)).'],[14,'Un lazo de realimentación negativa con G en la cadena directa y H en la de realimentación se sustituye por <i>G/(1 + G·H)</i>.'],[99,'Con H = 0,5: <i>M(s) = 10/(s² + s + 5)</i>. Los polos del lazo cerrado salen de s² + s + 5 = 0: s = −0,5 ± j2,18.']]},
+ function(D,t){var a=ease(seg(t,4,7)),b=ease(seg(t,11,14)),y=200;
+  D.text('R(s)',40,y-10,{s:15,c:C.mut});D.text('Y(s)',590,y-10,{s:15,c:C.mut,a:'right'});
+  if(b<1){var al=clamp(1-2*b,0,1);D.ctx.save();D.ctx.globalAlpha=al;D.ring(140,y,14,C.ax,2);D.text('+',122,y-12,{s:14,c:C.ax});D.text('−',146,y+30,{s:16,c:C.ax});D.arrow(40,y,124,y,C.ax,2);D.line(154,y,190,y,C.ax,2);
+   D.line(500,y,500,y+110,C.ax,2);D.line(500,y+110,380,y+110,C.ax,2);D.line(300,y+110,140,y+110,C.ax,2);D.arrow(140,y+110,140,y+16,C.ax,2);D.ctx.restore();bx(D,300,y+110,80,'H = 0,5',C.hl,al);
+   if(a<1){bx(D,lerp(190,230,a),y,110,'10/(s+1)',C.f,clamp(1-2*a,0,1));bx(D,lerp(340,300,a),y,80,'1/s',C.f,clamp(1-2*a,0,1));D.ctx.save();D.ctx.globalAlpha=clamp(1-2*a,0,1);D.arrow(lerp(300,340,a),y,lerp(340,300,a),y,C.ax,2);D.ctx.restore();}
+   if(a>0)bx(D,200,y,190,'10/(s(s+1))',C.m,clamp(2*a-1,0,1)*al);D.ctx.save();D.ctx.globalAlpha=al;D.arrow(420,y,580,y,C.ax,2);D.ctx.restore();}
+  if(b>0){D.arrow(40,y,200,y,C.ax,2);bx(D,200,y,240,'10/(s² + s + 5)',C.y,clamp(2*b-1,0,1));D.arrow(440,y,580,y,C.ax,2);}
+  U.readout(D,[b>0.5?'M(s) = G/(1 + GH) = 10/(s² + s + 5)':(a>0.5?'serie: G = G₁G₂ = 10/(s(s+1))':'diagrama de partida')],420);}));
+
 
 /* T5 respuesta al escalón de 2.º orden */
 function y2(t,z){var wn=2;if(z<1){var wd=wn*Math.sqrt(1-z*z),ph=Math.acos(z);return 1-Math.exp(-z*wn*t)/Math.sqrt(1-z*z)*Math.sin(wd*t+ph);}if(z===1)return 1-Math.exp(-wn*t)*(1+wn*t);var r=Math.sqrt(z*z-1),a=wn*(z-r),b=wn*(z+r);return 1-(b*Math.exp(-a*t)-a*Math.exp(-b*t))/(b-a);}
 M.reg('ra-t5',M.curva({title:'Sistema de 2.º orden: efecto del amortiguamiento',H:560,dur:18,p:[0.1,1.4],ax:{xr:[0,8],yr:[0,1.9],xt:[2,4,6,8],yt:[0.5,1,1.5],xd:0,yd:1,xl:'t (s)',yl:'y(t)'},h:300,
  curvas:[{f:function(x,z){return y2(x,Math.abs(z-1)<1e-3?1.001:z);},c:'m'}],
  extra:function(D,A){D.line(A.X(0),A.Y(1),A.X(8),A.Y(1),C.mut,1,[4,4]);},
- read:function(z){var Mp=z<1?Math.exp(-Math.PI*z/Math.sqrt(1-z*z))*100:0;return ['ζ = '+nf(z,2)+'    ω_{n} = 2 rad/s','sobreoscilación M_{p} = '+nf(Mp,1)+' %    t_{s} ≈ 4/(ζω_{n}) = '+nf(4/(z*2),1)+' s'];},
+ read:function(z){var Mp=z<1?Math.exp(-Math.PI*z/Math.sqrt(1-z*z))*100:0;return ['ζ = '+nf(z,2)+'    ω_{n} = 2 rad/s',(z<1?'sobreoscilación M_{p} = '+nf(Mp,1)+' %    t_{s} ≈ 4/(ζω_{n}) = '+nf(4/(z*2),1)+' s':'ζ ≥ 1: sin sobreoscilación (sobreamortiguado)')];},
  caps:[[6,'Un sistema de 2.º orden queda definido por ω<sub>n</sub> (rapidez) y ζ (amortiguamiento).'],[12,'Con ζ < 1 hay sobreoscilación: <i>M<sub>p</sub> = e<sup>−πζ/√(1−ζ²)</sup></i>. Cuanto menor es ζ, más oscila.'],[99,'Con ζ ≥ 1 no hay sobreoscilación, pero la respuesta se vuelve lenta. ζ ≈ 0,7 es un compromiso habitual.']]}));
 
 /* T6 error en régimen permanente de un sistema de tipo 0 */
